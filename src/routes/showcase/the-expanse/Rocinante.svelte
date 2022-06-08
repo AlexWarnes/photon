@@ -9,9 +9,9 @@
 	import ControlPanel from './ControlPanel.svelte';
 	import { setContext } from 'svelte';
 
-	const xThrust = tweened(0, { duration: 500, easing: cubicInOut });
-	const yThrust = tweened(0, { duration: 500, easing: cubicInOut });
-	const zThrust = tweened(0, { duration: 500, easing: cubicInOut });
+	const xThrust = tweened(0, { duration: 1000, easing: cubicInOut });
+	const yThrust = tweened(0, { duration: 1000, easing: cubicInOut });
+	const zThrust = tweened(0, { duration: 1000, easing: cubicInOut });
 
 	setContext('THRUST', {
 		xThrust,
@@ -47,4 +47,4 @@
 	/>
 </SC.Group>
 
-<ControlPanel {rZ} />
+<ControlPanel {rZ} {rX} {rY} />

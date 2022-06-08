@@ -11,7 +11,7 @@
 <style>
   .panel {
     padding: 1rem;
-    background-color: #161616;
+    background-color: #00000088;
     color: #fafbfc;
   }
 </style>
