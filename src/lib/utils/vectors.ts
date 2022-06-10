@@ -1,5 +1,6 @@
 import { tweened } from "svelte/motion";
 import { elasticOut, linear } from "svelte/easing"
+import * as THREE from "three";
 
 const defaultConfig = {
   start: 0,
@@ -16,6 +17,13 @@ export function oscillatingValue(config = defaultConfig){
 export const oscillatingVector = () => {
   const v = oscillatingValue(); 
   return [v, v, v]
+}
+export function randomVec3(){
+	// TODO: add range config args
+	const x = THREE.MathUtils.randInt(-20, 20)
+	const y = THREE.MathUtils.randInt(-15, 0)
+	const z = THREE.MathUtils.randInt(-30, 20)
+	return new THREE.Vector3(x, y, z)
 }
 
 /*

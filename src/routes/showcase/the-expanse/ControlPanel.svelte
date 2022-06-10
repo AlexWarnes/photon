@@ -108,7 +108,7 @@
 <style>
 	.panel-wrapper {
 		position: fixed;
-		top: 1rem;
+		top: 5rem;
 		right: 1rem;
 		font-size: 12px;
 	}

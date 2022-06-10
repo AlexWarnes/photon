@@ -12,3 +12,7 @@ body,
 	margin: 0;
 	font-family: 'Overpass', Verdana, Geneva, Tahoma, sans-serif;
 }
+
+body {
+	background-color: #fafbfc;
+}

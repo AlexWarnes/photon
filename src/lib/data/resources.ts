@@ -8,6 +8,7 @@ export const modelURL = {
 	sheep: "https://threejs.org/manual/examples/resources/models/animals/Sheep.gltf",
   rocinante: "https://alexwarnes.github.io/assets/models/rocinante/scene.gltf",
   dsn: "https://alexwarnes.github.io/assets/models/dsn-34/scene.gltf",
+	nefertiti: "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/Nefertiti/Nefertiti.glb",
 };
 /*
 	Models taken from the threejs examples. 
