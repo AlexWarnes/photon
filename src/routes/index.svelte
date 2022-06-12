@@ -1,10 +1,11 @@
 <header>
-	<h1>Hello!</h1>
+	<h1>PHOTON</h1>
+	<p>Hi, I'm <a href="https://alexwarnes.com">Alex.</a></p>
 	<p>
-		Welcome to my webGL sandbox where I will deploy all things 3D related. You can find all the code
-		on GitHub for reference. This site is currently under heavy construction, so forgive the bugs!
+		Welcome to my webGL sandbox! Here you'll find a collection of my 3D scenes and experiments. I
+		enjoy trying new tools and learning new techniques, and this codebase provides a centralized
+		location for sharing those scenes, re-using components, and enables faster prototyping.
 	</p>
-	<p>You can find my regular portfolio <a href="https://alexwarnes.com">over here</a></p>
 </header>
 
 <style>
