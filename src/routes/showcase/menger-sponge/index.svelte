@@ -14,7 +14,7 @@
 		PerspectiveCamera,
 		InstancedMesh
 	} from 'threlte';
-	import { mLevel } from './store';
+	import { mLevel, } from './store';
 	import MengerSponge from './MengerSponge.svelte';
 	import Orb from './Orb.svelte';
 	import Panel from '$lib/components/Panel.svelte';
@@ -103,8 +103,8 @@
 		bottom: 1rem;
 	}
 
-  .control label {
-    display: block;
-    margin: 0.75rem 0;
-  }
+	.control label {
+		display: block;
+		margin: 0.75rem 0;
+	}
 </style>
