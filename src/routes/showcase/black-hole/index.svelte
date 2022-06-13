@@ -74,13 +74,3 @@
     />
   
   </SC.Canvas>
-    
-  <style>
-    label {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      color: #ffffff;
-      display: block;
-    }
-  </style>
