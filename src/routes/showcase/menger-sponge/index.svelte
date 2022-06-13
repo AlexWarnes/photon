@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		BoxBufferGeometry,
 		MeshStandardMaterial,
@@ -14,10 +14,24 @@
 		PerspectiveCamera,
 		InstancedMesh
 	} from 'threlte';
-	import { mLevel, } from './store';
+	import { tweened } from 'svelte/motion';
+	import { mLevel } from './store';
 	import MengerSponge from './MengerSponge.svelte';
 	import Orb from './Orb.svelte';
 	import Panel from '$lib/components/Panel.svelte';
+	import { onMount } from 'svelte';
+
+	const geo = new BoxBufferGeometry();
+	const mat = new MeshStandardMaterial({
+		color: '#fafbfc'
+	});
+
+	const s = tweened(0, { duration: 750 });
+	function scaleOnLevelChange() {
+		s.set(0).then(() => s.set(1));
+	}
+
+	onMount(() => s.set(1, { delay: 750 }));
 </script>
 
 <div class="canvas-wrapper">
@@ -32,18 +46,11 @@
 		<Mesh
 			geometry={new SphereBufferGeometry()}
 			material={new MeshBasicMaterial({ color: '#ff92cf', side: BackSide })}
-			scale={200}
+			scale={400}
 		/>
 
 		<!-- MENGER INSTANCES -->
-		<InstancedMesh
-			id="m"
-			interactive
-			geometry={new BoxBufferGeometry()}
-			material={new MeshStandardMaterial({
-				color: '#fafbfc'
-			})}
-		>
+		<InstancedMesh id="m" interactive geometry={geo} material={mat} scale={$s}>
 			<MengerSponge level={$mLevel} />
 		</InstancedMesh>
 
@@ -56,15 +63,15 @@
 		<Panel>
 			<label>
 				Menger Level 1
-				<input type="radio" value={1} bind:group={$mLevel} />
+				<input type="radio" on:click={scaleOnLevelChange} value={1} bind:group={$mLevel} />
 			</label>
 			<label>
 				Menger Level 2
-				<input type="radio" value={2} bind:group={$mLevel} />
+				<input type="radio" on:click={scaleOnLevelChange} value={2} bind:group={$mLevel} />
 			</label>
 			<label>
 				Menger Level 3
-				<input type="radio" value={3} bind:group={$mLevel} />
+				<input type="radio" on:click={scaleOnLevelChange} value={3} bind:group={$mLevel} />
 			</label>
 
 			<!-- WARNING WARNING WARNING -->

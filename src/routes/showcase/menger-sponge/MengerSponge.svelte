@@ -1,18 +1,26 @@
 <script lang="ts">
+	import type { Position } from 'threlte';
 	import { getMengerPositions } from './geometry.js';
+	import { calcScaleFactor } from './store.js';
 	import Cube from './Cube.svelte';
-
+  
 	export let origin = { x: 0, y: 0, z: 0 };
 	export let level: number;
 
+	let positions: Position[] | any;
+	let scaleFactor: number;
 
-	$: positions = getMengerPositions(level, origin);
+	function init(l: number) {
+		setTimeout(() => {
+			scaleFactor = calcScaleFactor(l);
+			positions = getMengerPositions(l, [origin], scaleFactor);
+		}, 750);
+	}
+	$: init(level);
 </script>
 
-{#each positions as position}
-	{#if level === 1}
-		<Cube {position} />
-	{:else}
-		<svelte:self level={level - 1} origin={position} />
-	{/if}
-{/each}
+{#if positions}
+	{#each positions as position}
+		<Cube {position} {scaleFactor} />
+	{/each}
+{/if}

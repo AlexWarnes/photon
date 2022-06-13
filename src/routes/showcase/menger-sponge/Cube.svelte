@@ -1,19 +1,17 @@
 <script lang="ts">
-	import { Instance } from 'threlte';
+	import { Instance, type Position } from 'threlte';
 	import { tweened } from 'svelte/motion';
 	import { elasticOut } from 'svelte/easing';
-	import type { Position } from 'threlte';
 
 	export let position: Position;
-
-	const s = tweened(0.9, { duration: 2500, easing: elasticOut, });
-
+	export let scaleFactor: number;
+	$: s = tweened(0.9 * scaleFactor, { duration: 2500, easing: elasticOut });
 </script>
 
 <Instance
 	id="m"
 	{position}
 	scale={$s}
-	on:pointerenter={() => ($s = 0.6)}
-	on:pointerleave={() => ($s = 0.9)}
+	on:pointerenter={() => ($s = 0.6 * scaleFactor)}
+	on:pointerleave={() => ($s = 0.9 * scaleFactor)}
 />
