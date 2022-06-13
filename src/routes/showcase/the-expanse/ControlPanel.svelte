@@ -89,7 +89,7 @@
 			</div>
 			<h3 class="panel-heading">SETTINGS</h3>
 			<label
-				>First Person View
+				>Hull Camera
 				<input type="checkbox" bind:checked={$firstPerson} />
 			</label>
 			<h4 class="panel-heading">ROTATION UNITS</h4>
