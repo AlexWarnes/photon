@@ -2,13 +2,8 @@ import type { Position } from 'threlte';
 const levelToDistanceMap: any = {
 	'1': 1,
 	'2': 3,
-	'3': 3 ^ 2,
-	'4': 3 ^ 3,
-	'5': 3 ^ 4,
-	'6': 3 ^ 5,
-	'7': 3 ^ 6,
-	'8': 3 ^ 7
-	// ... etc
+	'3': 9,
+	'4': 27,
 };
 
 export function getMengerPositions(_level: number, origin: Position | any) {
