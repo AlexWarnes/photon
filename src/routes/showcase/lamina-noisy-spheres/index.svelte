@@ -1,12 +1,12 @@
 <script>
   import * as THREE from "three";
   import * as SC from "svelte-cubed";
-	import { noiseScale, spheres } from "./store"
+	import { noiseScale, spheres } from "./_routeLib/store"
 
-	import NoisySphere from "./NoisySphere.svelte";
-	import Controls from "./Controls.svelte";
-	import Background from "./Background.svelte";
-	import Mirror from "./Mirror.svelte";
+	import NoisySphere from "./_routeLib/NoisySphere.svelte";
+	import Controls from "./_routeLib/Controls.svelte";
+	import Background from "./_routeLib/Background.svelte";
+	import Mirror from "./_routeLib/Mirror.svelte";
 
 	
 	

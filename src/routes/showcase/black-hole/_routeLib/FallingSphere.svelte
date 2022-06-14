@@ -8,9 +8,9 @@
   export let initialPosition: [number, number, number];
   export let delay;
   let hide: boolean;
-  let pX = tweened(initialPosition[0], { duration: 700, easing: quintIn, delay })
-  let pY = tweened(initialPosition[1], { duration: 700, easing: quintIn, delay })
-  let pZ = tweened(initialPosition[2], { duration: 700, easing: quintIn, delay })
+  let pX = tweened(initialPosition[0], { duration: 1000, easing: quintIn, delay })
+  let pY = tweened(initialPosition[1], { duration: 1000, easing: quintIn, delay })
+  let pZ = tweened(initialPosition[2], { duration: 1000, easing: quintIn, delay })
   onMount(() => {
     pX.set(-initialPosition[0])
     pY.set(-initialPosition[1])

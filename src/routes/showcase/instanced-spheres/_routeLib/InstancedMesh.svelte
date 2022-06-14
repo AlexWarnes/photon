@@ -18,23 +18,23 @@
 			IMesh.setMatrixAt(i, matrix);
 		}
 	}
-	let drift = 0.1;
-	function driftMatrices() {
-		let matrix = new THREE.Matrix4();
-		let position = new THREE.Vector3();
+	// let drift = 0.1;
+	// function driftMatrices() {
+	// 	let matrix = new THREE.Matrix4();
+	// 	let position = new THREE.Vector3();
 
-		for (let i = 0; i < IMesh.count; i++) {
-			IMesh.getMatrixAt(i, matrix);
-			position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
-			position.x += drift; // move
-			position.y += drift; // move
-			position.z += drift; // move
+	// 	for (let i = 0; i < IMesh.count; i++) {
+	// 		IMesh.getMatrixAt(i, matrix);
+	// 		position.setFromMatrixPosition(matrix); // extract position form transformationmatrix
+	// 		position.x += drift; // move
+	// 		position.y += drift; // move
+	// 		position.z += drift; // move
 
-			matrix.setPosition(position); // write new positon back
-			IMesh.setMatrixAt(i, matrix);
-		}
-		IMesh.instanceMatrix.needsUpdate = true;
-	}
+	// 		matrix.setPosition(position); // write new positon back
+	// 		IMesh.setMatrixAt(i, matrix);
+	// 	}
+	// 	IMesh.instanceMatrix.needsUpdate = true;
+	// }
 	$: initMesh(count);
 </script>
 

@@ -14,19 +14,20 @@
 		PerspectiveCamera,
 		InstancedMesh
 	} from 'threlte';
-	import { tweened } from 'svelte/motion';
-	import { mLevel } from './store';
-	import MengerSponge from './MengerSponge.svelte';
-	import Orb from './Orb.svelte';
-	import Panel from '$lib/components/Panel.svelte';
 	import { onMount } from 'svelte';
+	import { tweened } from 'svelte/motion';
+	import { cubicIn } from 'svelte/easing';
+	import { mLevel } from './_routeLib/store';
+	import MengerSponge from './_routeLib/MengerSponge.svelte';
+	import Orb from './_routeLib/Orb.svelte';
+	import Panel from '$lib/components/Panel.svelte';
 
 	const geo = new BoxBufferGeometry();
 	const mat = new MeshStandardMaterial({
 		color: '#fafbfc'
 	});
 
-	const s = tweened(0, { duration: 750 });
+	const s = tweened(0, { duration: 750, });
 	function scaleOnLevelChange() {
 		s.set(0).then(() => s.set(1));
 	}

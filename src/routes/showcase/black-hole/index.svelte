@@ -2,7 +2,7 @@
 <script>
   import * as THREE from "three";
   import * as SC from "svelte-cubed";
-  import FallingSphere from "./FallingSphere.svelte"
+  import FallingSphere from "./_routeLib/FallingSphere.svelte"
   </script>
   
   

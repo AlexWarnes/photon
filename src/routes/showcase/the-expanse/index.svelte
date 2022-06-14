@@ -2,13 +2,11 @@
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
 	import { tweened } from 'svelte/motion';
-	import { cubicInOut, cubicOut } from 'svelte/easing';
-	import GLTF from '$lib/components/GLTF.svelte';
-	import { modelURL } from '$lib/data/resources';
-	import { controlStatus, firstPerson, modelsLoading, updateModelStatus } from './stores';
+	import { cubicInOut, } from 'svelte/easing';
+	import { controlStatus, firstPerson, modelsLoading, } from './_routeLib/stores';
 	import MicroLoading from '$lib/components/MicroLoading.svelte';
-	import RingGate from './RingGate.svelte';
-	import Rocinante from './Rocinante.svelte';
+	import RingGate from './_routeLib/RingGate.svelte';
+	import Rocinante from './_routeLib/Rocinante.svelte';
 
 	const cameraPosX = tweened(0, { duration: 4000, easing: cubicInOut, delay: 10000 });
 	const cameraPosZ = tweened(1, { duration: 6000, easing: cubicInOut, delay: 4000 });

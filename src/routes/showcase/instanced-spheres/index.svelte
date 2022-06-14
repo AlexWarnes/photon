@@ -2,8 +2,8 @@
 	console.clear();
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
-	import PointsGLTF from './PointsGLTF.svelte';
-	import InstancedMesh from './InstancedMesh.svelte';
+	import PointsGLTF from './_routeLib/PointsGLTF.svelte';
+	import InstancedMesh from './_routeLib/InstancedMesh.svelte';
 </script>
 
 <SC.Canvas

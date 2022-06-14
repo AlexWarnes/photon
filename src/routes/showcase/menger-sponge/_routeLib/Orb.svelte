@@ -2,9 +2,9 @@
 	import { IcosahedronBufferGeometry, MeshPhysicalMaterial } from 'three';
 	import { PointLight, Mesh, Group } from 'threlte';
 	import { onMount } from 'svelte';
-	import { mLevel } from './store';
 	import { tweened } from 'svelte/motion';
 	import { quintOut } from 'svelte/easing';
+	import { mLevel } from './store';
 	const sourceY = tweened(10, { duration: 8000, easing: quintOut });
 
 	onMount(() => {
