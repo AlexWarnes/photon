@@ -80,7 +80,7 @@
 			<!-- Use at your own risk. But also share if you do because if it works I bet it would look really cool.  -->
 			<!-- WARNING WARNING WARNING -->
 
-			<!-- <label>
+			<label>
 			Menger Level 4
 			<input type="radio" value={4} bind:group={$mLevel} />
 		</label>
@@ -91,7 +91,7 @@
 		<label>
 			Menger Level 6
 			<input type="radio" value={6} bind:group={$mLevel} />
-		</label> -->
+		</label>
 		</Panel>
 	</div>
 </div>
