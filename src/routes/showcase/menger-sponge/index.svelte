@@ -18,8 +18,9 @@
 	import { tweened } from 'svelte/motion';
 	import { cubicIn } from 'svelte/easing';
 	import { mLevel } from './_routeLib/store';
-	import MengerSponge from './_routeLib/MengerSponge.svelte';
+	// import MengerSponge from './_routeLib/MengerSponge.svelte';
 	import Orb from './_routeLib/Orb.svelte';
+	import ThreeIM from './_routeLib/ThreeIM.svelte';
 	import Panel from '$lib/components/Panel.svelte';
 
 	const geo = new BoxBufferGeometry();
@@ -51,9 +52,10 @@
 		/>
 
 		<!-- MENGER INSTANCES -->
-		<InstancedMesh id="m" interactive geometry={geo} material={mat} scale={$s}>
+		<!-- <InstancedMesh id="m" interactive geometry={geo} material={mat} scale={$s}>
 			<MengerSponge level={$mLevel} />
-		</InstancedMesh>
+		</InstancedMesh> -->
+		<ThreeIM level={$mLevel} />
 
 		<!-- LIGHT/ORB -->
 		<Orb />
