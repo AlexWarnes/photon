@@ -3,6 +3,13 @@
 
 	const scenes = [
 		{
+			name: 'Tree Fractals',
+			path: '/showcase/h-tree',
+			thumb: './assets/random-tree-thumb.png',
+			description: 'A 3d h-tree generator with optional random-tree generation.',
+			tools: ['threlte', 'lamina']
+		},
+		{
 			name: 'Menger Sponge',
 			path: '/showcase/menger-sponge',
 			thumb: './assets/menger-sponge-thumb.png',
