@@ -1,10 +1,10 @@
-import type { Position, Rotation } from 'threlte';
+import type { ThreltePointerEvent } from 'threlte';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
 import { writable } from 'svelte/store';
 import type { Vector3Tuple } from 'three';
 import { degToRad, mapLinear, randInt } from 'three/src/math/MathUtils';
 import { rxWritable } from "svelte-fuse-rx";
-import { startWith, throttleTime, map, filter } from 'rxjs';
+import { startWith, throttleTime, map, filter, Observable } from 'rxjs';
 export interface Branch {
 	id: string;
 	points: Vector3Tuple[];
@@ -85,11 +85,17 @@ export const defaultLineMaterial_4 = new LineMaterial({
 });
 
 export const connectVectors = writable<boolean>(false);
-export const pointerV3Event = new rxWritable(null);
-export const pointerX = pointerV3Event.pipe(
+export const pointerV3Event: any = new rxWritable(null);
+
+// RxJS Version
+export const pointerX: Observable<number> = pointerV3Event.pipe(
   throttleTime(200),
   filter(evt => !!evt),
-  map(evt => mapLinear(evt.detail.point['x'] / (window?.innerWidth || 800), 0, 1, -15, 15)),
+  map((evt: CustomEvent<ThreltePointerEvent>) => mapLinear(
+    evt.detail.point['x'] / (window?.innerWidth || 800), 
+    0, 1, 
+    -15, 15
+  )),
   startWith(0),
 )
 export const allowRandomness = writable<boolean>(false);

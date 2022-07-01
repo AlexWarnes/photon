@@ -18,12 +18,30 @@ export const oscillatingVector = () => {
   const v = oscillatingValue(); 
   return [v, v, v]
 }
-export function randomVec3(){
+
+export interface Vec3RangeOptions {
+	xMin: number;
+	xMax: number;
+	yMin: number;
+	yMax: number;
+	zMin: number;
+	zMax: number;
+}
+
+const defaultVec3RangeOptions: Vec3RangeOptions = {
+	xMin: -25,
+	xMax: 25,
+	yMin: -25,
+	yMax: 25,
+	zMin: -25,
+	zMax: 25,
+}
+export function randomVec3(range: Vec3RangeOptions = defaultVec3RangeOptions){
 	// TODO: add range config args
-	const x = THREE.MathUtils.randInt(-20, 20)
-	const y = THREE.MathUtils.randInt(-15, 0)
-	const z = THREE.MathUtils.randInt(-30, 20)
-	return new THREE.Vector3(x, y, z)
+	const x = THREE.MathUtils.randInt(range.xMin, range.xMax);
+	const y = THREE.MathUtils.randInt(range.yMin, range.yMax);
+	const z = THREE.MathUtils.randInt(range.zMin, range.zMax);
+	return new THREE.Vector3(x, y, z);
 }
 
 /*

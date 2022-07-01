@@ -28,7 +28,6 @@
 		<PerspectiveCamera position={{ x: 0, y: 15, z: 30 }} fov={55}>
 			<OrbitControls autoRotate enabled enableDamping target={{ x: 0, y: 10, z: 0 }} />
 		</PerspectiveCamera>
-
 		<!-- BACKGROUND -->
 		<Mesh
 			interactive
