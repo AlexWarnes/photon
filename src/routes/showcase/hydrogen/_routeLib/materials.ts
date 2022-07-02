@@ -1,9 +1,13 @@
-import { LayerMaterial, Color as LaminaColor, Depth, Fresnel, Noise, Gradient } from 'lamina/vanilla';
+import {
+	LayerMaterial,
+	Color as LaminaColor,
+	Depth,
+	Fresnel,
+	Noise,
+	Gradient
+} from 'lamina/vanilla';
 import { BackSide, Color } from 'three';
 import type { HydrogenIsotope } from './stores';
-// Design/Code derived from Paul Henschel's implementation here: https://codesandbox.io/s/figma-noodles-iedfg?file=/src/Noodles.js:230-1026
-// const colorA = new Color('#2032A5').convertSRGBToLinear();
-// const colorB = new Color('#0F1C4D').convertSRGBToLinear();
 const fresnel = new Color('#E7B473').convertSRGBToLinear();
 
 // Proton: #FF0605
@@ -32,25 +36,28 @@ const colors: any = {
 
 export const atomicMaterial: any = {
 	PROTIUM: {
-		proton: atomicNoiseMaterial("PROTIUM", "PROTON"),
-		neutron: atomicNoiseMaterial("PROTIUM", "NEUTRON"),
-		electron: atomicNoiseMaterial("PROTIUM", "ELECTRON"),
+		proton: atomicNoiseMaterial('PROTIUM', 'PROTON'),
+		neutron: atomicNoiseMaterial('PROTIUM', 'NEUTRON'),
+		electron: atomicNoiseMaterial('PROTIUM', 'ELECTRON')
 	},
 	DEUTERIUM: {
-		proton: atomicNoiseMaterial("DEUTERIUM", "PROTON"),
-		neutron: atomicNoiseMaterial("DEUTERIUM", "NEUTRON"),
-		electron: atomicNoiseMaterial("DEUTERIUM", "ELECTRON"),
+		proton: atomicNoiseMaterial('DEUTERIUM', 'PROTON'),
+		neutron: atomicNoiseMaterial('DEUTERIUM', 'NEUTRON'),
+		electron: atomicNoiseMaterial('DEUTERIUM', 'ELECTRON')
 	},
 	TRITIUM: {
-		proton: atomicNoiseMaterial("TRITIUM", "PROTON"),
-		neutron: atomicNoiseMaterial("TRITIUM", "NEUTRON"),
-		electron: atomicNoiseMaterial("TRITIUM", "ELECTRON"),
-	},
-}
+		proton: atomicNoiseMaterial('TRITIUM', 'PROTON'),
+		neutron: atomicNoiseMaterial('TRITIUM', 'NEUTRON'),
+		electron: atomicNoiseMaterial('TRITIUM', 'ELECTRON')
+	}
+};
 
-function atomicNoiseMaterial(isotope: HydrogenIsotope, particle: 'PROTON' | 'NEUTRON' | 'ELECTRON') {
+function atomicNoiseMaterial(
+	isotope: HydrogenIsotope,
+	particle: 'PROTON' | 'NEUTRON' | 'ELECTRON'
+) {
 	return new LayerMaterial({
-		lighting: "basic",
+		lighting: 'basic',
 		layers: [
 			new LaminaColor({ color: colors[particle.toLowerCase()] }),
 			new Depth({
@@ -78,11 +85,11 @@ function atomicNoiseMaterial(isotope: HydrogenIsotope, particle: 'PROTON' | 'NEU
 				scale: 1,
 				colorA: colors[particle.toLowerCase()],
 				colorB: colors[isotope.toLowerCase()],
-				mode: 'overlay',
+				mode: 'overlay'
 			})
 		]
 	});
-};
+}
 // export const specialNoiseMaterial = new LayerMaterial({
 // 	layers: [
 // 		new LaminaColor({ color: colorA }),
@@ -140,13 +147,13 @@ export const backgroundMaterial = new LayerMaterial({
 			colorA: colors.uranium,
 			colorB: colors.proton,
 			alpha: 1,
-      contrast: 0.5,
-      start: 1,
-      end: -4,
-      axes: "x",
-      mapping: "local",
-      visible: true,
-    }),
+			contrast: 0.5,
+			start: 1,
+			end: -4,
+			axes: 'x',
+			mapping: 'local',
+			visible: true
+		}),
 
 		new Noise({
 			mapping: 'local',
