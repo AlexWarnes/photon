@@ -3,6 +3,13 @@
 
 	const scenes = [
 		{
+			name: 'Hydrogen Isotopes',
+			path: '/showcase/hydrogen',
+			thumb: './assets/hydrogen-thumb.png',
+			description: 'A scene full of clickable, floating hydrogen isotopes and interactive text with integrated html.',
+			tools: ['threlte', 'lamina']
+		},
+		{
 			name: 'Tree Fractals',
 			path: '/showcase/h-tree',
 			thumb: './assets/random-tree-thumb.png',
