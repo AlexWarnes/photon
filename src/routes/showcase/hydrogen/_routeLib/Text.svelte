@@ -91,7 +91,7 @@
 			anchorX="center"
 		/>
 
-		<HTML position={{ x: 1, y: -2 }}>
+		<HTML position={{ x: -0.865, y: -2.125 }}>
 			<a
 				in:fade={{ delay: 500 }}
 				href="https://sipri.org/media/press-release/2022/global-nuclear-arsenals-are-expected-grow-states-continue-modernize-new-sipri-yearbook-out-now"
