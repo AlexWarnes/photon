@@ -9,14 +9,6 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		vite: {
-			ssr: {
-        noExternal: ['three'],
-      },
-			prerender: {
-				default: true,
-			}
-		}
 	},
 };
 
