@@ -10,7 +10,7 @@ export function generateAtom(){
 		id: generateUUID(),
 		isotope: getRandomIsotope(),
 		rotation: randFloat(0, 2 * Math.PI),
-		position: randomVec3({xMin: -1, xMax: 1, yMin: -1, yMax: 1, zMin: -20, zMax: 18}),
+		position: randomVec3({x: [-1, 1], y: [-1, 1], z: [-20, 18]}),
 	}
 }
 const count = 20;

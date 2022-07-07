@@ -4,6 +4,6 @@ export const glazeProps = {
   thickness: 2,
 }
 
-export const getRandomColor = (): string => {
+export const randomColor = (): string => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`
 }

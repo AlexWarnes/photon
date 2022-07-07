@@ -1,6 +1,7 @@
+import type { ModelURLConfig } from "$lib/ts-models/general";
 
 // List of example model URLs
-export const modelURL = {
+export const modelURL: ModelURLConfig = {
 	littleCity: "https://threejs.org/manual/examples/resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf",
 	mountains: "https://threejs.org/manual/examples/resources/models/mountain_landscape/scene.gltf",
 	llama: "https://threejs.org/manual/examples/resources/models/animals/Llama.gltf",
