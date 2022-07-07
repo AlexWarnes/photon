@@ -1,3 +1,10 @@
+:root {
+	--svelte-orange: #ff3e01;
+	--threejs-black: #444444;
+	--canvas-overlay: #00000088;
+	--canvas-overlay-hover: #00000055;
+	--accent: #007d7d;
+}
 
 * {
 	box-sizing: border-box;

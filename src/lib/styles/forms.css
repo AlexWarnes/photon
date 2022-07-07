@@ -1,0 +1,28 @@
+
+.control-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 0 0.75rem;
+	font-size: 0.875rem;
+}
+
+.control-group > label {
+	margin: 0.5rem 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+label.block {
+	display: block;
+}
+.control-group label.vec3 {
+	flex-direction: column;
+	width: 25%;
+}
+input.vec3 {
+	display: block;
+	width: 3rem;
+}
