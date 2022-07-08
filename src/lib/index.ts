@@ -2,7 +2,7 @@
 
 export { default as Accordion } from './components/Accordion.svelte';
 export { default as ControlGroup } from './components/ControlGroup.svelte';
-export { default as SC_GLTF } from './components/GLTF.svelte';
+// export { default as SC_GLTF } from './components/GLTF.svelte';
 export { default as Indicator } from './components/Indicator.svelte';
 export { default as Menu } from './components/Menu.svelte';
 export { default as MenuItem } from './components/MenuItem.svelte';

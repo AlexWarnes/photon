@@ -1,6 +1,6 @@
 {
 	"name": "photon-tools",
-	"version": "0.0.02",
+	"version": "0.0.03",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
