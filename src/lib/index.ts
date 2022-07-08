@@ -18,6 +18,26 @@ export { default as Select } from './components/inputs/Select.svelte';
 export { default as Vec3Input } from './components/inputs/Vec3Input.svelte';
 export { default as VisibilityCheckbox } from './components/inputs/VisibilityCheckbox.svelte';
 
+// SVG ICONS
+export { default as Chevron } from './svg/Chevron.svelte';
+export { default as Close } from './svg/Close.svelte';
+export { default as Code } from './svg/Code.svelte';
+export { default as Copy } from './svg/Copy.svelte';
+export { default as Cube } from './svg/Cube.svelte';
+export { default as GitHub } from './svg/GitHub.svelte';
+export { default as GPS } from './svg/GPS.svelte';
+export { default as Graph } from './svg/Graph.svelte';
+export { default as Model } from './svg/Model.svelte';
+export { default as Palette } from './svg/Palette.svelte';
+export { default as Rotate } from './svg/Rotate.svelte';
+export { default as Sun } from './svg/Sun.svelte';
+export { default as SvelteLogo } from './svg/SvelteLogo.svelte';
+export { default as Trash } from './svg/Trash.svelte';
+export { default as Twitter } from './svg/Twitter.svelte';
+export { default as visibility_off } from './svg/visibility_off.svelte';
+export { default as visibility } from './svg/visibility.svelte';
+export { default as Widgets } from './svg/Widgets.svelte';
+
 // Utils
 export { randomColor } from './utils/materials';
 export { randomVec3 } from './utils/vectors';
@@ -31,5 +51,5 @@ export type {
 	ModelURLConfig,
 	Vec3RangeObj,
 	Vec3RangeOptions
-} from './ts-models/general';
+} from './ts-models/general';	
 
