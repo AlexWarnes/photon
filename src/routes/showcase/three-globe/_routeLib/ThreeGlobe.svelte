@@ -1,39 +1,57 @@
 <script lang="ts">
-	import { Object3DInstance, useFrame } from 'threlte';
+	import { Object3DInstance, useFrame, useThrelte } from 'threlte';
 	import ThreeGlobe from 'three-globe';
-
-	export let pointsData: any = [];
-	export let arcsData: any = [];
+	import { Raycaster } from 'three';
+	import { displayData, hexData } from './data';
+	import { randomColor } from '$lib';
 
 	let globe: any = new ThreeGlobe()
 		.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
 		.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-		.pointsData(pointsData)
-		.pointAltitude('size')
-		.pointColor('color')
-		.arcsData(arcsData)
-		.arcColor('color')
-		.arcDashLength(0.4)
-		.arcDashGap(4)
-		.arcDashInitialGap(() => Math.random() * 5)
-		.arcDashAnimateTime(1000);
+		.hexPolygonsData(hexData)
+		.hexPolygonColor(randomColor)
+		.hexPolygonResolution(4)
+		.hexPolygonAltitude(0.05)
+		.hexPolygonMargin(0.2);
 
-	useFrame(() => {
-		globe = globe;
-	});
+	const raycaster = new Raycaster();
+	const { pointer, camera } = useThrelte();
 
-	function updateGlobeData(key: string, value: any[]) {
-		if (globe) {
-			if (key === 'pointsData') {
-				globe.pointsData(value);
-			} else if (key === 'arcsData') {
-				globe.arcsData(value);
-			}
+	// This only works... sometimes? Very buggy
+	function checkHover(vec2: any, cam: any) {
+		if (!(globe && vec2 && cam && !!pointsAsObj3d[0])) return;
+		raycaster.setFromCamera(vec2, cam);
+
+		// Determine what the raycaster is intersecting with
+		let io = raycaster.intersectObjects(pointsAsObj3d, false);
+
+		// If anything
+		if (io.length) {
+			// handle intersected objects,
+			console.log('io:', io);
+
+			// set displayData to the data we want to display (this is rendered in index.svelte)
+			//@ts-ignore
+			$displayData = io[0]?.object?.__data.properties || {};
 		}
 	}
 
-	$: updateGlobeData('pointsData', pointsData);
-	$: updateGlobeData('arcsData', arcsData);
+	// An array of Obj3d for the raycaster to determine intersections
+	// three-globe data is not Obj3d type, but includes the __threeObj property which is
+	let pointsAsObj3d: any[] = [];
+	$: if (globe && globe.hexPolygonsData()) {
+		let tempArr = [];
+		for (let h of globe.hexPolygonsData()){
+			if(h.__threeObj){
+				tempArr.push(h.__threeObj)
+			}
+		}
+		pointsAsObj3d = tempArr;
+	}
+	$: checkHover($pointer, $camera);
+
 </script>
 
-<Object3DInstance object={globe} scale={0.05} />
+{#if globe}
+	<Object3DInstance object={globe} scale={0.02} />
+{/if}

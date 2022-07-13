@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { SphereBufferGeometry, MeshBasicMaterial, BackSide } from 'three';
-	import { Canvas, PerspectiveCamera, AmbientLight, Mesh, OrbitControls } from 'threlte';
-	import { arcsData, pointsData } from './_routeLib/data';
+	import { Canvas, PerspectiveCamera, AmbientLight, Mesh, OrbitControls, Text } from 'threlte';
+	import { arcsData, pointsData, displayData } from './_routeLib/data';
 	import ThreeGlobe from './_routeLib/ThreeGlobe.svelte';
 
 	onMount(() => {
@@ -20,8 +20,8 @@
 
 <div class="canvas-wrapper">
 	<Canvas>
-		<PerspectiveCamera fov={55} position={{ z: -20 }}>
-			<OrbitControls autoRotate />
+		<PerspectiveCamera fov={55} position={{ z: 20 }}>
+			<OrbitControls enabled />
 		</PerspectiveCamera>
 		<AmbientLight intensity={0.5} />
 
@@ -32,13 +32,38 @@
 			scale={400}
 		/>
 
-		<ThreeGlobe pointsData={$pointsData} arcsData={$arcsData} />
+		{#if $displayData && $displayData.NAME}
+			<Text
+				text={$displayData.NAME}
+				scale={6}
+				position={{ y: 3}}
+				font="/assets/ChakraPetch-Medium.ttf"
+			/>
+		{/if}
+		<ThreeGlobe />
 	</Canvas>
+
+	{#if $displayData}
+		<div class="data-box">
+			<pre>{JSON.stringify($displayData, null, 2)}</pre>
+		</div>
+	{/if}
 </div>
 
 <style>
 	.canvas-wrapper {
 		width: 100%;
 		height: 100%;
+	}
+	.data-box {
+		position: fixed;
+		bottom: 2rem;
+		left: 2rem;
+		width: 18rem;
+		height: 10rem;
+		overflow: auto;
+		padding: 1rem;
+		background-color: darkcyan;
+		color: white;
 	}
 </style>
