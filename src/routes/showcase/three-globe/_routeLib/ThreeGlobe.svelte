@@ -5,6 +5,7 @@
 	import { displayData, hexData } from './data';
 	import { randomColor } from '$lib';
 
+	useFrame(() => globe = globe) // Maybe a better way to use invalidate() instead of this?
 	let globe: any = new ThreeGlobe()
 		.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
 		.bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
@@ -15,7 +16,7 @@
 		.hexPolygonMargin(0.2);
 
 	const raycaster = new Raycaster();
-	const { pointer, camera } = useThrelte();
+	const { pointer, camera, } = useThrelte();
 
 	// This only works... sometimes? Very buggy
 	function checkHover(vec2: any, cam: any) {
@@ -41,17 +42,14 @@
 	let pointsAsObj3d: any[] = [];
 	$: if (globe && globe.hexPolygonsData()) {
 		let tempArr = [];
-		for (let h of globe.hexPolygonsData()){
-			if(h.__threeObj){
-				tempArr.push(h.__threeObj)
+		for (let h of globe.hexPolygonsData()) {
+			if (h.__threeObj) {
+				tempArr.push(h.__threeObj);
 			}
 		}
 		pointsAsObj3d = tempArr;
 	}
 	$: checkHover($pointer, $camera);
-
 </script>
 
-{#if globe}
-	<Object3DInstance object={globe} scale={0.02} />
-{/if}
+<Object3DInstance object={globe} scale={0.02} />

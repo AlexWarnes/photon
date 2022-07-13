@@ -20,8 +20,8 @@
 
 <div class="canvas-wrapper">
 	<Canvas>
-		<PerspectiveCamera fov={55} position={{ z: 20 }}>
-			<OrbitControls autoRotate />
+		<PerspectiveCamera fov={55} position={{ z: 10 }}>
+			<OrbitControls autoRotate autoRotateSpeed={0.2} />
 		</PerspectiveCamera>
 		<AmbientLight intensity={0.5} />
 
