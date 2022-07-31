@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { type ThreltePointerEvent, Text, Group } from 'threlte';
-	import { HTML, useCursor } from 'threlte/extras';
+	import { type ThreltePointerEvent, Group } from '@threlte/core';
+	import { Text, HTML, useCursor } from '@threlte/extras';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
@@ -91,7 +91,7 @@
 			anchorX="center"
 		/>
 
-		<HTML position={{ x: -0.865, y: -2.125 }}>
+		<HTML position={{ x: 0, y: 1.75 }}>
 			<a
 				in:fade={{ delay: 500 }}
 				href="https://sipri.org/media/press-release/2022/global-nuclear-arsenals-are-expected-grow-states-continue-modernize-new-sipri-yearbook-out-now"

@@ -19,7 +19,7 @@
 	} from './treeState';
 	import { linear } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
-	import { Line2 } from 'threlte';
+	import { Line2 } from '@threlte/core';
 	import { onMount } from 'svelte';
 
 	export let lineStart = defaultLineStart;

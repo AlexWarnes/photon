@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { SphereBufferGeometry, MeshBasicMaterial, BackSide } from 'three';
-	import { Canvas, PerspectiveCamera, AmbientLight, Mesh, OrbitControls } from 'threlte';
+	import { Canvas, PerspectiveCamera, AmbientLight, Mesh, OrbitControls } from '@threlte/core';
 	import { arcsData, pointsData } from './_routeLib/data';
 	import ThreeGlobe from './_routeLib/ThreeGlobe.svelte';
 

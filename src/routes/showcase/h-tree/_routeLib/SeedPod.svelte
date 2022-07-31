@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { TorusGeometry, CircleGeometry } from 'three';
 	import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
-	import { Mesh, MeshInstance } from 'threlte';
+	import { Mesh, MeshInstance } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { linear } from 'svelte/easing';
 	import { LayerMaterial, Noise } from 'lamina/vanilla';

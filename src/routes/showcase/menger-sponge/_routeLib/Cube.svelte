@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Instance, type Position } from 'threlte';
+	import { Instance, type Position } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { elasticOut } from 'svelte/easing';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Object3DInstance, useFrame } from 'threlte';
+	import { Object3DInstance, useFrame } from '@threlte/core';
 	import ThreeGlobe from 'three-globe';
 
 	export let pointsData: any = [];

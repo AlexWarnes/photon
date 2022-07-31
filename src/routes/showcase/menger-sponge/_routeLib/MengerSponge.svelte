@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Position } from 'threlte';
+	import type { Position } from '@threlte/core';
 	import { getMengerPositions } from './geometry.js';
 	import { calcScaleFactor } from './store.js';
 	import Cube from './Cube.svelte';

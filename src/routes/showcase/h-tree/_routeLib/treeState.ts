@@ -1,4 +1,4 @@
-import type { ThreltePointerEvent } from 'threlte';
+import type { ThreltePointerEvent } from '@threlte/core';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial';
 import { writable } from 'svelte/store';
 import type { Vector3Tuple } from 'three';

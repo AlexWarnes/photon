@@ -13,7 +13,7 @@
 		OrbitControls,
 		PerspectiveCamera,
 		InstancedMesh
-	} from 'threlte';
+	} from '@threlte/core';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
 	import { cubicIn } from 'svelte/easing';

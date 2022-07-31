@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { IcosahedronBufferGeometry, MeshPhysicalMaterial } from 'three';
-	import { PointLight, Mesh, Group } from 'threlte';
+	import { PointLight, Mesh, Group } from '@threlte/core';
 	import { onMount } from 'svelte';
 	import { tweened } from 'svelte/motion';
 	import { quintOut } from 'svelte/easing';

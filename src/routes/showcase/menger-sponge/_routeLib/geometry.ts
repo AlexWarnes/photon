@@ -1,4 +1,4 @@
-import type { Position } from 'threlte';
+import type { Position } from '@threlte/core';
 const levelToDistanceMap: any = {
 	'1': 1,
 	'2': 3,

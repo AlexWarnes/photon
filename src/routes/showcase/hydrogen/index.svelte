@@ -3,7 +3,7 @@
 	 * This scene was inspired by Paul Henschel's codesandbox here: https://codesandbox.io/s/figma-noodles-iedfg?file=/src/Noodles.js:230-1026
 	*/
 	import { SphereBufferGeometry } from 'three';
-	import { Canvas, PerspectiveCamera, Mesh } from 'threlte';
+	import { Canvas, PerspectiveCamera, Mesh } from '@threlte/core';
 	import { atoms } from './_routeLib/stores';
 	import Hydrogen from './_routeLib/Hydrogen.svelte';
 	import Text from './_routeLib/Text.svelte';

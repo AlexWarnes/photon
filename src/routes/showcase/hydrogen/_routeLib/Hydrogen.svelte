@@ -6,8 +6,8 @@
 		DodecahedronBufferGeometry,
 		OctahedronBufferGeometry
 	} from 'three';
-	import { Mesh, Group, useFrame } from 'threlte';
-	import { Float } from 'threlte/extras';
+	import { Mesh, Group, useFrame } from '@threlte/core';
+	import { Float } from '@threlte/extras';
 	import { atomicMaterial } from './materials';
 	import { removeAtomByID, type HydrogenIsotope } from './stores';
 	export let position = { x: 0, y: 0, z: 0 };

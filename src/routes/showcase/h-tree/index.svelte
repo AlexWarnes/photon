@@ -6,7 +6,7 @@
 		OrbitControls,
 		PerspectiveCamera,
 		type ThreltePointerEvent
-	} from 'threlte';
+	} from '@threlte/core';
 	import { allowRandomness, pointerV3Event } from './_routeLib/treeState';
 	import Panel from '$lib/components/Panel.svelte';
 	// import HTree from './_routeLib/HTree.svelte';
