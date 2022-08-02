@@ -3,6 +3,13 @@
 
 	const scenes = [
 		{
+			name: 'Threlte Physics',
+			path: '/showcase/physics-threlte',
+			thumb: './assets/physics-threlte-thumb.png',
+			description: "Experimenting with threlte's new (as of v4) physics package @threlte/rapier and interactivity.",
+			tools: ['threlte', 'rapier', 'lamina']
+		},
+		{
 			name: 'Hydrogen Isotopes',
 			path: '/showcase/hydrogen',
 			thumb: './assets/hydrogen-thumb.png',
