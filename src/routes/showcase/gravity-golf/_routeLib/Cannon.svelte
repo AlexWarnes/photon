@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+Color,
 		CylinderBufferGeometry,
 		Material,
 		MeshBasicMaterial,
@@ -58,14 +59,14 @@
 </script>
 
 <Group position={{ y: 0, z: 100 }} rotation={{ y: 0 }}>
-	<AxisHelper />
+	<!-- <AxisHelper /> -->
 	<Mesh
 		geometry={new CylinderBufferGeometry(1, 0.25)}
-		material={new MeshStandardMaterial({ color: 'grey' })}
+		material={new MeshStandardMaterial({ color: new Color('#232323') })}
 		rotation={{ x: $rotationX, z: $rotationZ }}
 		scale={{ x: 0.5, y: 2, z: 0.5 }}
 	>
-		<AxisHelper />
+		<!-- <AxisHelper /> -->
 	</Mesh>
 	{#each firingSolutions as solution (solution.id)}
 		<Projectile {projectileMaterial} {...solution} />

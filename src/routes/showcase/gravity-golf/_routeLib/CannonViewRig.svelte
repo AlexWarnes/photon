@@ -24,7 +24,7 @@
 </script>
 
 <Group rotation={{ y: $orbitRotation }}>
-	<AxisHelper length={20} />
+	<!-- <AxisHelper length={20} /> -->
 	<PerspectiveCamera position={{ y: 2, z: 103 }} fov={60}>
 		<OrbitControls enableZoom enablePan={false} enableRotate={false} />
 	</PerspectiveCamera>

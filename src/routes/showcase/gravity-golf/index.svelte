@@ -1,5 +1,49 @@
+<script lang="ts" context="module">
+const cloudyMaterial = new LayerMaterial({
+  color: "#118be2",
+  lighting: "basic",
+  side: BackSide,
+  layers: [
+    new Noise({
+      colorA: new Color("#c3c3c3").convertSRGBToLinear(),
+      colorB: new Color("#f8f8f8").convertSRGBToLinear(),
+      colorC: new Color("#218ed1").convertSRGBToLinear(),
+      colorD: new Color("#118be2").convertSRGBToLinear(),
+      alpha: 0.5,
+      scale: 2,
+      type: "perlin",
+      offset: [0,0,0],
+      mapping: "local",
+      mode: "normal",
+      visible: true,
+    }),
+    
+  ]
+});
+
+const eclipseMaterial = new LayerMaterial({
+  color: new Color("#152161").convertSRGBToLinear(),
+  lighting: "standard",
+  layers: [
+    new Fresnel({
+      color: new Color("#ed0c0c").convertSRGBToLinear(),
+      alpha: 1,
+      power: 2,
+      intensity: 1,
+      bias: 0,
+      mode: "screen",
+      visible: true,
+    }),
+    
+  ]
+});
+    
+    
+</script>
+
 <script>
-	import { AxesHelper, DodecahedronBufferGeometry, GridHelper, MeshStandardMaterial } from 'three';
+	import { AxesHelper, BackSide, Color, DodecahedronBufferGeometry, GridHelper, MeshBasicMaterial, MeshStandardMaterial, SphereBufferGeometry } from 'three';
+  import { Fresnel, LayerMaterial, Noise } from "lamina/vanilla";
 	import {
 		Canvas,
 		PerspectiveCamera,
@@ -19,9 +63,9 @@ Object3DInstance
 	import CubeTargets from './_routeLib/CubeTargets.svelte';
 import CannonViewRig from './_routeLib/CannonViewRig.svelte';
 import AxisHelper from '$lib/components/AxisHelper.svelte';
+import TargetGroup from './_routeLib/TargetGroup.svelte';
   
 	let fire = false;
-
   
 </script>
 
@@ -35,31 +79,29 @@ import AxisHelper from '$lib/components/AxisHelper.svelte';
 
 			<DirectionalLight position={{ x: 100, y: 100, z: 100 }} />
 			<AmbientLight />
-      <Object3DInstance position={{x: 0, y: 0, z: 0}} object={new GridHelper(200)}/>
+      <!-- <Object3DInstance position={{x: 0, y: 0, z: 0}} object={new GridHelper(200)}/> -->
 
 			<!-- <Board /> -->
 
 			<Mesh
-				geometry={new DodecahedronBufferGeometry()}
-				material={new MeshStandardMaterial({ color: 'seagreen' })}
+				geometry={new SphereBufferGeometry()}
+				material={eclipseMaterial}
 				scale={5}
-			>
+			/>
+			<Mesh
+				geometry={new SphereBufferGeometry()}
+				material={cloudyMaterial}
+				scale={400}
+			/>
         <!-- <Object3DInstance object={new AxesHelper( 5 )}/> -->
         <!-- <AxisHelper /> -->
-      </Mesh>
 
       <CannonViewRig bind:fire/>
 			<!-- <Group rotation={{ y: orbitRotation }}>
         <PerspectiveCamera position={{ y: 2, z: 103 }} fov={60} />
 				<Cannon power={$power} bind:fire />
 			</Group> -->
-			<CubeTargets />
-			<CubeTargets />
-			<CubeTargets />
-			<CubeTargets />
-			<CubeTargets />
-			<CubeTargets />
-			<CubeTargets />
+      <TargetGroup />
 		</World>
 	</Canvas>
 	<div class="controls">

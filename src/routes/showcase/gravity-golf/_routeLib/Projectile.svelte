@@ -30,7 +30,7 @@
 	gravityScale={1}
   rotation={{x: Math.PI / 5}}
 >
-	<Collider shape={'ball'} args={[0.25]} mass={100}>
+	<Collider shape={'ball'} args={[0.25]} mass={1000}>
 		<Mesh {geometry} material={projectileMaterial || material} scale={0.5}>
       <Object3DInstance object={new AxesHelper( 5 )}/>
     </Mesh>
