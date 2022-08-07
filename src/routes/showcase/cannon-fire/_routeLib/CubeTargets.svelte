@@ -1,0 +1,69 @@
+<script lang="ts" context="module">
+	const geometry = new BoxBufferGeometry();
+	const material = new MeshStandardMaterial({ color: new Color('red').convertSRGBToLinear() });
+
+  const maxCubes = 10;
+	const cubeColors = Array(maxCubes)
+		.fill('x')
+		.map(() => new MeshBasicMaterial({ color: randomColor() }));
+
+	const groundMaterial = new LayerMaterial({
+		color: '#d9d9d9',
+		lighting: 'standard',
+		layers: [
+			new Gradient({
+				colorA: new Color('#145b09').convertSRGBToLinear(),
+				colorB: new Color('#9e5b3b').convertSRGBToLinear(),
+				alpha: 1,
+				contrast: 20,
+				start: 3,
+				end: -1,
+				axes: 'y',
+				mapping: 'local',
+				visible: true
+			})
+		]
+	});
+</script>
+
+<script lang="ts">
+	import { MeshStandardMaterial, BoxBufferGeometry, Color, MeshBasicMaterial } from 'three';
+	import { Mesh, Group } from '@threlte/core';
+	import { RigidBody, Collider } from '@threlte/rapier';
+	import { randomColor, randomVec3 } from '$lib';
+	import { randInt } from 'three/src/math/MathUtils';
+	import { LayerMaterial, Noise, Fresnel, Gradient } from 'lamina/vanilla';
+	export let cubeCount = randInt(3, maxCubes);
+  export let inner: boolean = false;
+  const groundHeight = 1;
+	const cubeStack = Array(cubeCount)
+		.fill('x')
+		.map((_, idx) => {
+			return {
+        // dimension: 2 - idx / 5
+				dimension: 2,
+			};
+		});
+	const position = inner ? randomVec3() : randomVec3({ x: [-60, 60], y: [-25, 5], z: [-60, 60] });
+</script>
+
+<Group {position}>
+	{#each cubeStack as cube, idx}
+		<RigidBody type={'dynamic'} gravityScale={1} position={{ y: (idx * 1.05) * cube.dimension + ((groundHeight / 2) + (cube.dimension / 2)) }}>
+			<Collider
+				shape={'cuboid'}
+				args={[cube.dimension / 2, cube.dimension / 2, cube.dimension / 2]}
+			/>
+			<Mesh
+				{geometry}
+				material={cubeColors[idx]}
+				scale={cube.dimension}
+			/>
+		</RigidBody>
+	{/each}
+
+	<!-- BASE -->
+	<Collider shape={'cuboid'} args={[5, groundHeight / 2, 5]}>
+		<Mesh {geometry} material={groundMaterial} scale={{ x: 10, y: groundHeight, z: 10 }} />
+	</Collider>
+</Group>

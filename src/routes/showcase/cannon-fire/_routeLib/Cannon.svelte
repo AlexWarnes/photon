@@ -1,13 +1,13 @@
 <script lang="ts">
 	import {
-Color,
+		Color,
 		CylinderBufferGeometry,
 		Material,
 		MeshBasicMaterial,
 		MeshStandardMaterial,
 		SphereBufferGeometry
 	} from 'three';
-	import { Mesh, useThrelte, Group } from '@threlte/core';
+	import { Mesh, useThrelte, Group, useThrelteRoot } from '@threlte/core';
 	import { RigidBody, Collider } from '@threlte/rapier';
 	import { tweened } from 'svelte/motion';
 	import { degToRad, generateUUID, mapLinear, radToDeg } from 'three/src/math/MathUtils';
@@ -17,10 +17,9 @@ Color,
 
 	export let power: number = 50;
 	export let projectileMaterial: Material | undefined = undefined;
-	export let delay: number = 0;
 	export let fire: boolean = false;
-	export let loading: boolean = false;
 	const { pointer, renderer, camera } = useThrelte();
+	const { raycaster } = useThrelteRoot();
 	const rotationZ = tweened(0, { duration: 500, easing: quintOut }); // left/right
 	const rotationX = tweened(Math.PI / 2, { duration: 500, easing: quintOut }); // left/right
 	let firingSolutions: any[] = [];
@@ -28,13 +27,18 @@ Color,
 	function captureFiringSolution(x: number, y: number) {
 		const config = {
 			id: generateUUID(),
-			xPower: Math.tan(y - orbitRotationYForProjectileXOffset) * power,
-			yPower: Math.tan(x - Math.PI / 2) * power, // weird but bc of the cylinder rotation everything is weird
-			zPower: -power,
+			xPower: raycaster.ray.direction.x * power,
+			yPower: raycaster.ray.direction.y * power,
+			zPower: raycaster.ray.direction.z * power,
+
+			// xPower: Math.tan(y - orbitRotationYForProjectileXOffset) * power,
+			// yPower: Math.tan(x - Math.PI / 2) * power, // weird but bc of the cylinder rotation everything is weird
+			// zPower: -power,
 			power
 		};
 		firingSolutions = [...firingSolutions, config];
 	}
+
 	//@ts-ignore
 	$: rotationZ.set($pointer.x * degToRad(30 * $camera?.aspect)); // 1 = 45deg, -1 = -45deg
 	/**
@@ -44,18 +48,9 @@ Color,
 	 */
 	$: rotationX.set($pointer.y * degToRad(30) + (Math.PI + Math.atan(100 / -2)));
 	$: if (fire) {
-		loading = true;
-		if (delay) {
-			setTimeout(() => {
-				loading = false;
-			}, delay);
-		}
-	}
-	$: if (fire) {
-		captureFiringSolution($rotationX, $rotationZ);
 		fire = false;
+		captureFiringSolution($rotationX, $rotationZ);
 	}
-	$: console.log(firingSolutions[firingSolutions.length - 1]);
 </script>
 
 <Group position={{ y: 0, z: 100 }} rotation={{ y: 0 }}>
