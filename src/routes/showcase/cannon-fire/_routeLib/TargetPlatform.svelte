@@ -7,7 +7,7 @@
 			if (Math.random() > 0.8) {
 				return new MeshPhysicalMaterial({ color: randomColor(), ...glazeProps });
 			} else {
-				return new MeshStandardMaterial({ color: randomColor() });
+				return new MeshBasicMaterial({ color: randomColor() });
 			}
 		});
 
@@ -31,7 +31,7 @@
 </script>
 
 <script lang="ts">
-	import { BoxBufferGeometry, Color, MeshStandardMaterial, MeshPhysicalMaterial } from 'three';
+	import { BoxBufferGeometry, Color, MeshBasicMaterial, MeshPhysicalMaterial } from 'three';
 	import { InstancedMesh, Instance, Group, Mesh } from '@threlte/core';
 	import { RigidBody, Collider } from '@threlte/rapier';
 	import { randomColor, randomVec3 } from '$lib';
@@ -58,7 +58,7 @@
 		<InstancedMesh {geometry} material={cubeMaterials[idx]}>
 			<RigidBody
 				type={'dynamic'}
-				gravityScale={$gravity || 1}
+				gravityScale={typeof $gravity === 'number' ? $gravity : 1}
 				position={{ y: idx * 1.05 * cube.dimension + (groundHeight / 2 + cube.dimension / 2) }}
 			>
 				<Collider

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CubeTargets from './CubeTargets.svelte';
+	import TargetPlatform from './TargetPlatform.svelte';
 	export let targetCount: number = 10;
 
 	$: outerPlatforms = Array(targetCount - (targetCount % 3)).fill('x');
@@ -7,8 +7,8 @@
 </script>
 
 {#each outerPlatforms as _, idx}
-	<CubeTargets />
+	<TargetPlatform />
 {/each}
 {#each innerPlatforms as _, idx}
-	<CubeTargets inner/>
+	<TargetPlatform inner/>
 {/each}
