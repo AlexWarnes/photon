@@ -1,85 +1,65 @@
 <script>
-	import {
-		AxesHelper,
-		BackSide,
-		Color,
-		DodecahedronBufferGeometry,
-		GridHelper,
-		MeshBasicMaterial,
-		MeshPhysicalMaterial,
-		MeshStandardMaterial,
-		SphereBufferGeometry
-	} from 'three';
-	import { Fresnel, LayerMaterial, Noise } from 'lamina/vanilla';
-	import {
-		Canvas,
-		PerspectiveCamera,
-		OrbitControls,
-		Mesh,
-		DirectionalLight,
-		AmbientLight,
-		Group,
-		useFrame,
-		Object3DInstance
-	} from '@threlte/core';
+	import { SphereBufferGeometry } from 'three';
+	import { Canvas, Mesh, DirectionalLight, AmbientLight } from '@threlte/core';
 	import { Debug, World } from '@threlte/rapier';
 	import Panel from '$lib/components/Panel.svelte';
-	import { power, orbit, } from './_routeLib/state';
+	import { power, orbit, cloudyMaterial, gravity, debug } from './_routeLib/state';
 	import CannonViewRig from './_routeLib/CannonViewRig.svelte';
 	import TargetGroup from './_routeLib/TargetGroup.svelte';
-	import { glazeProps } from '$lib/utils/materials';
-import ShiftyBlockers from './_routeLib/ShiftyBlockers.svelte';
+	import ShiftyBlockers from './_routeLib/ShiftyBlockers.svelte';
 
 	let fire = false;
 </script>
 
+<svelte:window
+	on:keydown={(e) => {
+		if (e.key === ' ' || e.key === 'Spacebar') fire = true;
+	}}
+/>
+
 <div class="canvas-wrapper" on:click={() => (fire = true)}>
 	<Canvas>
 		<World>
-			<Debug />
-			<!-- <PerspectiveCamera position={{ y: 2, z: 103 }} fov={60}>
-				<OrbitControls />
-			</PerspectiveCamera> -->
+			{#if $debug}
+				<Debug />
+			{/if}
 
 			<DirectionalLight position={{ x: 100, y: 100, z: 100 }} />
-			<AmbientLight />
-			<Object3DInstance position={{x: 0, y: 0, z: 0}} object={new GridHelper(200)}/>
+			<AmbientLight intensity={0.75} />
 
-			<!-- <Board /> -->
-
-			<!-- <Mesh
-				geometry={new SphereBufferGeometry()}
-				material={new MeshPhysicalMaterial(glazeProps)}
-				scale={5}
-			/> -->
+			<!-- Background -->
 			<Mesh
 				geometry={new SphereBufferGeometry()}
-				material={new MeshBasicMaterial({
-					color: new Color('lightskyblue').convertSRGBToLinear(),
-					side: BackSide
-				})}
+				material={cloudyMaterial}
 				scale={400}
 				interactive
-				on:click={() => console.log('bgClick')}
 			/>
-			<!-- <Object3DInstance object={new AxesHelper( 5 )}/> -->
-			<!-- <AxisHelper /> -->
 
-			<CannonViewRig bind:fire />
+			<CannonViewRig bind:fire rotate={$orbit} power={$power} />
 			<TargetGroup targetCount={14} />
 			<ShiftyBlockers />
 		</World>
 	</Canvas>
 	<div class="controls" on:click|stopPropagation>
 		<Panel>
-			<label>
-				Orbit
-				<input type="checkbox" bind:checked={$orbit} />
-			</label>
-			<label>
-				Power
-				<input type="range" min="10" max="100" bind:value={$power} />
-			</label>
+			<div class="input-wrapper">
+				<label>
+					Rotate
+					<input type="checkbox" bind:checked={$orbit} />
+				</label>
+				<label>
+					Physics Debug
+					<input type="checkbox" bind:checked={$debug} />
+				</label>
+				<label class="power-label">
+					Power: {$power}
+					<input type="range" min="50" max="100" bind:value={$power} />
+				</label>
+				<label class="power-label">
+					Gravity: {$gravity}
+					<input type="range" step="0.1" min="0" max="1" bind:value={$gravity} />
+				</label>
+			</div>
 		</Panel>
 	</div>
 </div>
@@ -97,7 +77,16 @@ import ShiftyBlockers from './_routeLib/ShiftyBlockers.svelte';
 		bottom: 1rem;
 		left: 1rem;
 	}
-	label {
+	.input-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+	label:not(:last-child) {
+		margin: 0 0 1rem;
+	}
+	.power-label input {
 		display: block;
 	}
 </style>

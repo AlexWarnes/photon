@@ -1,11 +1,15 @@
 <script lang="ts" context="module">
 	const geometry = new BoxBufferGeometry();
-	const material = new MeshStandardMaterial({ color: new Color('red').convertSRGBToLinear() });
-
-  const maxCubes = 10;
-	const cubeColors = Array(maxCubes)
+	const maxCubes = 10;
+	const cubeMaterials = Array(maxCubes)
 		.fill('x')
-		.map(() => new MeshBasicMaterial({ color: randomColor() }));
+		.map(() => {
+			if (Math.random() > 0.8) {
+				return new MeshPhysicalMaterial({ color: randomColor(), ...glazeProps });
+			} else {
+				return new MeshStandardMaterial({ color: randomColor() });
+			}
+		});
 
 	const groundMaterial = new LayerMaterial({
 		color: '#d9d9d9',
@@ -27,21 +31,23 @@
 </script>
 
 <script lang="ts">
-	import { MeshStandardMaterial, BoxBufferGeometry, Color, MeshBasicMaterial } from 'three';
-	import { Mesh, Group } from '@threlte/core';
+	import { BoxBufferGeometry, Color, MeshStandardMaterial, MeshPhysicalMaterial } from 'three';
+	import { InstancedMesh, Instance, Group, Mesh } from '@threlte/core';
 	import { RigidBody, Collider } from '@threlte/rapier';
 	import { randomColor, randomVec3 } from '$lib';
 	import { randInt } from 'three/src/math/MathUtils';
-	import { LayerMaterial, Noise, Fresnel, Gradient } from 'lamina/vanilla';
+	import { LayerMaterial, Gradient } from 'lamina/vanilla';
+	import { gravity } from './state';
+	import { glazeProps } from '$lib/utils/materials';
 	export let cubeCount = randInt(3, maxCubes);
-  export let inner: boolean = false;
-  const groundHeight = 1;
+	export let inner: boolean = false;
+	const groundHeight = 1;
 	const cubeStack = Array(cubeCount)
 		.fill('x')
 		.map((_, idx) => {
 			return {
-        // dimension: 2 - idx / 5
-				dimension: 2,
+				// dimension: 2 - idx / 5
+				dimension: 2
 			};
 		});
 	const position = inner ? randomVec3() : randomVec3({ x: [-60, 60], y: [-25, 5], z: [-60, 60] });
@@ -49,17 +55,19 @@
 
 <Group {position}>
 	{#each cubeStack as cube, idx}
-		<RigidBody type={'dynamic'} gravityScale={1} position={{ y: (idx * 1.05) * cube.dimension + ((groundHeight / 2) + (cube.dimension / 2)) }}>
-			<Collider
-				shape={'cuboid'}
-				args={[cube.dimension / 2, cube.dimension / 2, cube.dimension / 2]}
-			/>
-			<Mesh
-				{geometry}
-				material={cubeColors[idx]}
-				scale={cube.dimension}
-			/>
-		</RigidBody>
+		<InstancedMesh {geometry} material={cubeMaterials[idx]}>
+			<RigidBody
+				type={'dynamic'}
+				gravityScale={$gravity || 1}
+				position={{ y: idx * 1.05 * cube.dimension + (groundHeight / 2 + cube.dimension / 2) }}
+			>
+				<Collider
+					shape={'cuboid'}
+					args={[cube.dimension / 2, cube.dimension / 2, cube.dimension / 2]}
+				/>
+				<Instance scale={cube.dimension} />
+			</RigidBody>
+		</InstancedMesh>
 	{/each}
 
 	<!-- BASE -->

@@ -4,35 +4,29 @@
 </script>
 
 <script lang="ts">
-	import {
-		CylinderBufferGeometry,
-		Material,
-		MeshBasicMaterial,
-		MeshStandardMaterial,
-		SphereBufferGeometry,
-    AxesHelper
-	} from 'three';
-	import { Mesh, useThrelte, Group, Object3DInstance } from '@threlte/core';
+	import { Material, MeshBasicMaterial, SphereBufferGeometry, AxesHelper } from 'three';
+	import { InstancedMesh, Instance } from '@threlte/core';
 	import { RigidBody, Collider } from '@threlte/rapier';
+	import AxisHelper from '$lib/components/AxisHelper.svelte';
 	export let xPower: any;
 	export let yPower: any;
 	export let zPower: any;
-	export let power: any;
 	export let id: any;
-	// export let config: any;
+	export let created: number;
 	export let projectileMaterial: Material | undefined;
-
 </script>
 
-<RigidBody
-	linearVelocity={{ x: xPower, y: yPower, z: zPower }}
-	type={'dynamic'}
-	gravityScale={1}
-  rotation={{x: Math.PI / 5}}
->
-	<Collider shape={'ball'} args={[0.25]} mass={1000}>
-		<Mesh {geometry} material={projectileMaterial || material} scale={0.5}>
-      <Object3DInstance object={new AxesHelper( 5 )}/>
-    </Mesh>
-	</Collider>
-</RigidBody>
+<InstancedMesh {geometry} material={projectileMaterial || material}>
+	<RigidBody
+		linearVelocity={{ x: xPower, y: yPower, z: zPower }}
+		type={'dynamic'}
+		gravityScale={1}
+		rotation={{ x: Math.PI / 5 }}
+	>
+		<Collider shape={'ball'} args={[0.5]} mass={500}>
+			<Instance scale={0.5}>
+				<AxisHelper length={3} />
+			</Instance>
+		</Collider>
+	</RigidBody>
+</InstancedMesh>

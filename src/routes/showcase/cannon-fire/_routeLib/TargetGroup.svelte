@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Group, useFrame } from '@threlte/core';
-
 	import CubeTargets from './CubeTargets.svelte';
 	export let targetCount: number = 10;
 

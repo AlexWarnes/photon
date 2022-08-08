@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-	const geometry = new DodecahedronBufferGeometry();
 	const material = new MeshStandardMaterial({ color: new Color('red').convertSRGBToLinear() });
 </script>
 
@@ -8,7 +7,8 @@
 		MeshStandardMaterial,
 		DodecahedronBufferGeometry,
 		Color,
-		MeshBasicMaterial
+		MeshBasicMaterial,
+TorusBufferGeometry
 	} from 'three';
 	import { Mesh, Group } from '@threlte/core';
 	import { RigidBody, Collider } from '@threlte/rapier';
