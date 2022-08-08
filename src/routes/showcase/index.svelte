@@ -3,17 +3,27 @@
 
 	const scenes = [
 		{
+			name: 'Cannon Fire',
+			path: '/showcase/cannon-fire',
+			thumb: './assets/cannon-fire-thumb.png',
+			description:
+				'Simple game with adjustable gravity, cannon power, debug visualizer. Simulates cannon fire with RigidBody linearVelocity derived from raycaster direction and a power coefficient.',
+			tools: ['threlte', 'rapier', 'lamina']
+		},
+		{
 			name: 'Threlte Physics',
 			path: '/showcase/physics-threlte',
 			thumb: './assets/physics-threlte-thumb.png',
-			description: "Experimenting with threlte's new (as of v4) physics package @threlte/rapier and interactivity.",
+			description:
+				"Experimenting with threlte's new (as of v4) physics package @threlte/rapier and interactivity.",
 			tools: ['threlte', 'rapier', 'lamina']
 		},
 		{
 			name: 'Hydrogen Isotopes',
 			path: '/showcase/hydrogen',
 			thumb: './assets/hydrogen-thumb.png',
-			description: 'A scene full of clickable, floating hydrogen isotopes and interactive text with integrated html.',
+			description:
+				'A scene full of clickable, floating hydrogen isotopes and interactive text with integrated html.',
 			tools: ['threlte', 'lamina']
 		},
 		{
@@ -67,7 +77,7 @@
 
 <div class="grid-wrapper">
 	{#each scenes as scene (scene.path)}
-		<Paper style="margin: 1rem;">
+		<Paper style="margin: 1rem;" level="l1">
 			<a class="card-link-wrapper" href={scene.path}>
 				<div class="card">
 					<div class="img-wrapper">
@@ -109,13 +119,15 @@
 		max-width: 300px;
 		height: 520px;
 		overflow: hidden;
+		background-color: #fafbfc;
+		transition: all 200ms ease-in-out;
 	}
 
 	img {
 		transition: all 500ms ease-in-out;
 	}
 	.card:hover {
-		background-color: #fafbfc;
+		background-color: #ffffff;
 	}
 	.card:hover img {
 		transform: scale(1.25);
