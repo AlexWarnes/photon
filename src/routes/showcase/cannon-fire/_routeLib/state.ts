@@ -5,7 +5,7 @@ import { BackSide, Color } from 'three';
 export const gravity = writable(1);
 export const orbit = writable(false);
 export const debug = writable(false);
-export const power = writable(50);
+export const power = writable(75);
 
 export const cloudyMaterial = new LayerMaterial({
 	color: new Color('lightskyblue').convertSRGBToLinear(),

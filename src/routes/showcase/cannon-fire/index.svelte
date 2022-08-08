@@ -13,7 +13,10 @@
 
 <svelte:window
 	on:keydown={(e) => {
-		if (e.key === ' ' || e.key === 'Spacebar') fire = true;
+		if (e.key === ' ' || e.key === 'Spacebar') {
+			e.preventDefault();
+			fire = true;
+		} 
 	}}
 />
 
