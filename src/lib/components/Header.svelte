@@ -20,6 +20,6 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		background-color: salmon;
+		background-color: #161616;
 	}
 </style>
