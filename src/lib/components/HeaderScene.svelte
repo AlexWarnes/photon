@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	const mat = {
-		STANDARD: new MeshStandardMaterial({flatShading: true}),
+		STANDARD: new MeshStandardMaterial({ flatShading: true }),
 		RED: new MeshStandardMaterial({ color: '#cd5c5c', roughness: 0.25 }),
 		GREEN: new MeshStandardMaterial({ color: 'seagreen', roughness: 0.25 }),
 		BLUE: new MeshStandardMaterial({ color: 'skyblue', roughness: 0.25 }),
@@ -21,39 +21,35 @@
 		BoxBufferGeometry,
 		MeshStandardMaterial,
 		BackSide,
-		Color,
-		GridHelper,
 		MeshPhysicalMaterial,
-		CylinderGeometry,
-		Sphere,
-		SphereGeometry,
 		IcosahedronBufferGeometry,
-		Mesh as ThreeMesh,
 		DodecahedronBufferGeometry,
-		MeshBasicMaterial
+		MeshBasicMaterial,
+		ConeBufferGeometry
 	} from 'three';
 	import {
-		Canvas,
 		PerspectiveCamera,
 		DirectionalLight,
-		AmbientLight,
 		PointLight,
 		Mesh,
-		Object3DInstance,
 		OrbitControls,
 		Group,
 		InstancedMesh,
 		Instance,
-		type Position
+		type Position,
 	} from '@threlte/core';
-	import { AutoColliders, Collider, Debug, RigidBody } from '@threlte/rapier';
+	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
 	import { glazeProps, randomColor } from '$lib/utils/materials';
 	import { tweened } from 'svelte/motion';
-	import { elasticOut, cubicInOut } from 'svelte/easing';
+	import { elasticOut, cubicInOut, cubicIn } from 'svelte/easing';
 	import { onMount } from 'svelte';
 	import { randomVec3 } from '$lib/utils/vectors';
-	import { randInt } from 'three/src/math/MathUtils';
-	let icosColor: string = '#ffffff';
+	import { generateUUID, randFloat, randInt } from 'three/src/math/MathUtils';
+	import { useCursor } from '@threlte/extras';
+	const { onPointerEnter, onPointerLeave } = useCursor();
+
+	let pointLightColor: string = '';
+	const pointLightIntensity = tweened(0, { duration: 2000, easing: cubicIn });
 	const lightRotation = tweened(0, { duration: 2000, easing: cubicInOut });
 	const entryScale = tweened(0, { duration: 2000, easing: elasticOut });
 	const guardScaleX = tweened(0, { duration: 2000, easing: elasticOut });
@@ -61,52 +57,85 @@
 	const guardScaleZ = tweened(0, { duration: 2000, easing: elasticOut });
 	let showGuard: string = '';
 
-	let drops: any[] = [];
+	// let drops: any[] = [];
+	let dropsFromTop: any[] = [];
+	let dropsFromRight: any[] = [];
+	let dropsFromLeft: any[] = [];
+	// const drops: any = {
+	// 	TOP: () => dropsFromTop,
+	// 	LEFT: () => dropsFromRight,
+	// 	RIGHT: () => dropsFromLeft,
+	// };
 
 	function activateDrops(origin: 'LEFT' | 'RIGHT' | 'TOP') {
-		if (!drops.length) {
-			activateGuard(origin);
-			drops = Array(100)
-				.fill('x')
-				.map((_) => {
-					const colorMap = {
-						TOP: 'seagreen',
-						LEFT: '#cd5c5c',
-						RIGHT: 'skyblue'
-					};
-					const originMap = {
-						TOP: randomVec3({ x: [-3, 3], y: [40, 100], z: [-3, 3] }),
-						LEFT: randomVec3({ x: [-50, -200], y: [-3, 20], z: [-3, 3] }),
-						RIGHT: randomVec3({ x: [50, 200], y: [-3, 20], z: [-3, 3] })
-					};
-					const lvMap = {
-						TOP: { x: 0, z: 0 },
-						LEFT: { z: randInt(-15, 15) },
-						RIGHT: randomVec3({ x: [50, 200], y: [-3, 3], z: [-3, 3] })
-					};
-					return {
-						color: colorMap[origin],
-						origin: originMap[origin],
-						linearVelocity: (_p: Position) => {
-							let p = {
-								x: 0,
-								y: 0,
-								z: 0,
-								..._p
-							};
-							const lv = {
-								x: origin === 'LEFT' ? 50 : origin === 'RIGHT' ? -50 : 0,
-								y: origin === 'LEFT' || origin === 'RIGHT' ? randInt(5, 10) : 0,
-								z: origin === 'LEFT' || origin === 'RIGHT' ? randInt(-5, 5) : 0
-							};
-							return lv;
-						}
-					};
-				});
-			setTimeout(() => {
-				drops = [];
-			}, 15000);
+		if (origin === 'TOP' && !dropsFromTop.length) {
+			dropsFromTop = generateDrops(origin);
 		}
+		if (origin === 'LEFT' && !dropsFromLeft.length) {
+			dropsFromLeft = generateDrops(origin);
+		}
+		if (origin === 'RIGHT' && !dropsFromRight.length) {
+			dropsFromRight = generateDrops(origin);
+		}
+	}
+
+	function generateDrops(origin: 'LEFT' | 'RIGHT' | 'TOP') {
+		const colorMap = {
+			TOP: 'seagreen',
+			LEFT: '#cd5c5c',
+			RIGHT: 'skyblue'
+		};
+
+		let drops = Array(100)
+			.fill('x')
+			.map((_) => {
+				const originMap = {
+					TOP: randomVec3({ x: [-3, 3], y: [40, 100], z: [-3, 3] }),
+					LEFT: randomVec3({ x: [-50, -200], y: [-3, 20], z: [-3, 3] }),
+					RIGHT: randomVec3({ x: [50, 200], y: [-3, 20], z: [-3, 3] })
+				};
+				const lvMap = {
+					TOP: { x: 0, z: 0 },
+					LEFT: { z: randInt(-15, 15) },
+					RIGHT: randomVec3({ x: [50, 200], y: [-3, 3], z: [-3, 3] })
+				};
+				return {
+					id: generateUUID(),
+					color: colorMap[origin],
+					origin: originMap[origin],
+					linearVelocity: (_p: Position) => {
+						let p = {
+							x: 0,
+							y: 0,
+							z: 0,
+							..._p
+						};
+						const lv = {
+							x: origin === 'LEFT' ? 50 : origin === 'RIGHT' ? -50 : 0,
+							y: origin === 'LEFT' || origin === 'RIGHT' ? randInt(5, 10) : 0,
+							z: origin === 'LEFT' || origin === 'RIGHT' ? randInt(-5, 5) : 0
+						};
+						return lv;
+					}
+				};
+			});
+
+		resetDropsTimer(origin);
+		return drops;
+	}
+
+	function resetDropsTimer(origin: 'LEFT' | 'RIGHT' | 'TOP') {
+		setTimeout(() => {
+			if (origin === 'TOP') {
+				dropsFromTop = [];
+			}
+			if (origin === 'LEFT') {
+				dropsFromLeft = [];
+			}
+			if (origin === 'RIGHT') {
+				dropsFromRight = [];
+			}
+		}, 15000);
 	}
 
 	const scaleGuardUp = () => {
@@ -146,6 +175,10 @@
 	onMount(() => {
 		entryScale.set(1.5);
 	});
+
+	$: if (pointLightColor) {
+		pointLightIntensity.set(0.1);
+	}
 </script>
 
 <PerspectiveCamera position={{ y: 25, z: 100 }} fov={30}>
@@ -154,8 +187,10 @@
 		autoRotateSpeed={0.75}
 		enablePan={false}
 		enableZoom={true}
-		enableRotate={false}
+		enableRotate={true}
 		target={{ x: 0, y: 10, z: 0 }}
+		maxDistance={400}
+		minDistance={100}
 	/>
 </PerspectiveCamera>
 
@@ -165,11 +200,20 @@
 </Group>
 
 <!-- RANDOM DODEC -->
-<RigidBody position={{ z: 0, y: 10 }}>
+<RigidBody position={{ z: -1, y: 10 }} gravityScale={0.125}>
 	<Collider shape="ball" args={[1]} />
 	<Mesh
 		geometry={geo.dodec}
 		material={new MeshStandardMaterial({ color: 'pink', roughness: 0.25 })}
+		castShadow
+	/>
+</RigidBody>
+<RigidBody position={{ z: -1, y: 7.5 }} gravityScale={0.125}>
+	<Collider shape="cone" args={[1.5, 1]} rotation={{ x: Math.PI }} />
+	<Mesh
+		geometry={new ConeBufferGeometry(1, 3)}
+		material={new MeshStandardMaterial({ color: 'pink', roughness: 0.25 })}
+		rotation={{ x: Math.PI }}
 		castShadow
 	/>
 </RigidBody>
@@ -178,7 +222,8 @@
 <Mesh
 	geometry={geo.sphere}
 	material={new MeshStandardMaterial({
-		color: 'lightgrey',
+		color: 'lightsteelblue',
+		// color: 'lightgrey',
 		roughness: 0.5,
 		metalness: 0.5,
 		side: BackSide
@@ -207,8 +252,6 @@
 		scale={{ x: 20, y: 1, z: 20 }}
 		position={{ x: -35, y: 20, z: -50 }}
 		rotation={{ x: Math.PI / 8, z: Math.PI / 10 }}
-		interactive
-		on:click={() => (icosColor = '#ffffff')}
 	/>
 </AutoColliders>
 <AutoColliders shape="convexHull">
@@ -218,8 +261,6 @@
 		scale={{ x: 20, y: 1, z: 20 }}
 		position={{ x: 35, y: 15, z: 50 }}
 		rotation={{ x: -Math.PI / 8, z: Math.PI / 10 }}
-		interactive
-		on:click={() => (icosColor = '#ffffff')}
 	/>
 </AutoColliders>
 <AutoColliders shape="convexHull">
@@ -229,8 +270,6 @@
 		scale={{ x: 20, y: 1, z: 20 }}
 		position={{ x: 35, y: -15, z: -50 }}
 		rotation={{ x: Math.PI / 12, z: -Math.PI / 10 }}
-		interactive
-		on:click={() => (icosColor = '#ffffff')}
 	/>
 </AutoColliders>
 
@@ -264,7 +303,14 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => (icosColor = 'indianred')}
+			on:pointerenter={() => {
+				onPointerEnter();
+				pointLightColor = '#cd5c5c';
+			}}
+			on:pointerleave={() => {
+				onPointerLeave();
+				pointLightIntensity.set(0);
+			}}
 			on:click={() => activateDrops('LEFT')}
 		/>
 	</Collider>
@@ -276,7 +322,14 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => (icosColor = 'seagreen')}
+			on:pointerenter={() => {
+				onPointerEnter();
+				pointLightColor = 'seagreen';
+			}}
+			on:pointerleave={() => {
+				onPointerLeave();
+				pointLightIntensity.set(0);
+			}}
 			on:click={() => activateDrops('TOP')}
 		/>
 	</Collider>
@@ -292,10 +345,19 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => (icosColor = 'skyblue')}
+			on:pointerenter={() => {
+				onPointerEnter();
+				pointLightColor = 'skyblue';
+			}}
+			on:pointerleave={() => {
+				onPointerLeave();
+				pointLightIntensity.set(0);
+			}}
 			on:click={() => activateDrops('RIGHT')}
 		/>
 	</Collider>
+
+	<PointLight color={pointLightColor} intensity={$pointLightIntensity} decay={0.5} />
 </Group>
 <InstancedMesh geometry={geo.icos} material={mat.BLUE}>
 	{#each Array(100) as _}
@@ -304,16 +366,45 @@
 		</Collider>
 	{/each}
 </InstancedMesh>
-<InstancedMesh geometry={geo.sphere} material={mat.STANDARD}>
-	{#each drops as drop}
+{#each dropsFromTop as drop (drop.id)}
+	<InstancedMesh geometry={geo.sphere} material={new MeshBasicMaterial()}>
+		{@const scale = randFloat(0.25, 2)}
 		<RigidBody
-			gravityScale={0.75}
+			gravityScale={0.875}
 			angularVelocity={{ x: Math.random() }}
 			linearVelocity={drop.linearVelocity(drop.origin, drop.position)}
 		>
-			<Collider friction={-1} shape="ball" args={[0.5]} position={drop.origin}>
-				<Instance color={drop.color} scale={0.5} />
+			<Collider friction={-1} shape="ball" args={[scale]} position={drop.origin}>
+				<Instance color={drop.color} {scale} />
 			</Collider>
 		</RigidBody>
-	{/each}
-</InstancedMesh>
+	</InstancedMesh>
+{/each}
+{#each dropsFromRight as drop (drop.id)}
+	<InstancedMesh geometry={geo.sphere} material={new MeshBasicMaterial()}>
+		{@const scale = randFloat(0.25, 2)}
+		<RigidBody
+			gravityScale={0.875}
+			angularVelocity={{ x: Math.random() }}
+			linearVelocity={drop.linearVelocity(drop.origin, drop.position)}
+		>
+			<Collider friction={-1} shape="ball" args={[scale]} position={drop.origin}>
+				<Instance color={drop.color} {scale} />
+			</Collider>
+		</RigidBody>
+	</InstancedMesh>
+{/each}
+{#each dropsFromLeft as drop (drop.id)}
+	<InstancedMesh geometry={geo.sphere} material={new MeshBasicMaterial()}>
+		{@const scale = randFloat(0.25, 2)}
+		<RigidBody
+			gravityScale={0.875}
+			angularVelocity={{ x: Math.random() }}
+			linearVelocity={drop.linearVelocity(drop.origin, drop.position)}
+		>
+			<Collider friction={-1} shape="ball" args={[scale]} position={drop.origin}>
+				<Instance color={drop.color} {scale} />
+			</Collider>
+		</RigidBody>
+	</InstancedMesh>
+{/each}
