@@ -5,6 +5,8 @@
 		Mesh,
 		OrbitControls,
 		PerspectiveCamera,
+		AmbientLight,
+		DirectionalLight,
 		type ThreltePointerEvent
 	} from '@threlte/core';
 	import { allowRandomness, pointerV3Event } from './_routeLib/treeState';
@@ -28,6 +30,8 @@
 		<PerspectiveCamera position={{ x: 0, y: 15, z: 30 }} fov={55}>
 			<OrbitControls autoRotate enabled enableDamping target={{ x: 0, y: 10, z: 0 }} />
 		</PerspectiveCamera>
+		<AmbientLight />		
+		<DirectionalLight position={{x: 10, y: 10, z: 5}}/>
 		<!-- BACKGROUND -->
 		<Mesh
 			interactive

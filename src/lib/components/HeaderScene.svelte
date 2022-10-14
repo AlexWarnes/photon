@@ -36,7 +36,7 @@
 		Group,
 		InstancedMesh,
 		Instance,
-		type Position,
+		type Position
 	} from '@threlte/core';
 	import { AutoColliders, Collider, RigidBody } from '@threlte/rapier';
 	import { glazeProps, randomColor } from '$lib/utils/materials';
@@ -45,8 +45,6 @@
 	import { onMount } from 'svelte';
 	import { randomVec3 } from '$lib/utils/vectors';
 	import { generateUUID, randFloat, randInt } from 'three/src/math/MathUtils';
-	import { useCursor } from '@threlte/extras';
-	const { onPointerEnter, onPointerLeave } = useCursor();
 
 	let pointLightColor: string = '';
 	const pointLightIntensity = tweened(0, { duration: 2000, easing: cubicIn });
@@ -303,14 +301,8 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => {
-				onPointerEnter();
-				pointLightColor = '#cd5c5c';
-			}}
-			on:pointerleave={() => {
-				onPointerLeave();
-				pointLightIntensity.set(0);
-			}}
+			on:pointerenter={() => (pointLightColor = '#cd5c5c')}
+			on:pointerleave={() => pointLightIntensity.set(0)}
 			on:click={() => activateDrops('LEFT')}
 		/>
 	</Collider>
@@ -322,14 +314,8 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => {
-				onPointerEnter();
-				pointLightColor = 'seagreen';
-			}}
-			on:pointerleave={() => {
-				onPointerLeave();
-				pointLightIntensity.set(0);
-			}}
+			on:pointerenter={() => (pointLightColor = 'seagreen')}
+			on:pointerleave={() => pointLightIntensity.set(0)}
 			on:click={() => activateDrops('TOP')}
 		/>
 	</Collider>
@@ -345,14 +331,8 @@
 			scale={$entryScale}
 			castShadow
 			interactive
-			on:pointerenter={() => {
-				onPointerEnter();
-				pointLightColor = 'skyblue';
-			}}
-			on:pointerleave={() => {
-				onPointerLeave();
-				pointLightIntensity.set(0);
-			}}
+			on:pointerenter={() => (pointLightColor = 'skyblue')}
+			on:pointerleave={() => pointLightIntensity.set(0)}
 			on:click={() => activateDrops('RIGHT')}
 		/>
 	</Collider>
