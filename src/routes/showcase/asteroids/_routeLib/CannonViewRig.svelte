@@ -52,9 +52,9 @@
 		firingSolutions = [...firingSolutions, config];
 	}
 
-	function removeSelf(id: string): void {
-		firingSolutions = firingSolutions.filter(f => f.id !== id);
-	}
+	// function removeSelf(id: string): void {
+			// firingSolutions = firingSolutions.filter(f => f.id !== id);
+	// }
 	$: if (fireOnClick) {
 		renderer?.domElement.addEventListener('click', fire)
 	} else {
@@ -78,7 +78,7 @@
 
 		{#each firingSolutions as solution (solution.id)}
 			{#if Date.now() - solution.created < projectileDuration}
-				<Projectile {projectileMaterial} {...solution} {castShadow} {projectileScale} on:collisionenter={() => removeSelf(solution.id)}/>
+				<Projectile {projectileMaterial} {...solution} {castShadow} {projectileScale} />
 			{/if}
 		{/each}
 
