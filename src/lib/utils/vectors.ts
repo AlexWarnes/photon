@@ -1,8 +1,8 @@
 import { tweened } from 'svelte/motion';
 import { linear } from 'svelte/easing';
-import * as THREE from 'three';
 import type { Vec3RangeOptions } from '$lib/ts-models/general';
-import type { Vector3 } from 'three';
+import { Vector3 } from 'three';
+import { randFloat, randInt } from 'three/src/math/MathUtils';
 
 const defaultConfig = {
 	start: 0,
@@ -62,42 +62,22 @@ export function randomVec3(range: Vec3RangeOptions = defaultVec3RangeOptions): V
 		}
 	}
 	// TODO: add range config args
-	const x = THREE.MathUtils.randInt(xMin, xMax);
-	const y = THREE.MathUtils.randInt(yMin, yMax);
-	const z = THREE.MathUtils.randInt(zMin, zMax);
-	return new THREE.Vector3(x, y, z);
+	const x = randInt(xMin, xMax);
+	const y = randInt(yMin, yMax);
+	const z = randInt(zMin, zMax);
+	return new Vector3(x, y, z);
 }
 
-/*
-	import { rxThrottle } from 'svelte-fuse-rx';
+export function randomAngle() {
+	return (randFloat(0, 0.99) * (2 * Math.PI));
+}
 
-	// 	Variables to handle mousemoves
-	let cameraShift = true;
-	let innerHeight: number;
-	let innerWidth: number;
-	let defaultRigPosition = [0, 10, 50];
-	let rigPosition = defaultRigPosition;
-	function handleMM({ detail }: any) {
-		if (cameraShift) {
-			const m = new THREE.Vector2(
-				THREE.MathUtils.mapLinear(detail.x / innerWidth, 0, 1, 15, -15),
-				THREE.MathUtils.mapLinear(detail.y / innerHeight, 0, 1, 15, -15)
-			);
-			console.log("rig:",m, [defaultRigPosition[0] - m.x, defaultRigPosition[1] + m.y, 50])
-			rigPosition = [-m.x, m.y, 50];
-			// rigPosition = [defaultRigPosition[0] - m.x, defaultRigPosition[1] + m.y, 50];
-		}
-	}
-</script>
-
-<svelte:window bind:innerHeight bind:innerWidth />
-
-<div
-	use:rxThrottle={{
-		on: 'mousemove',
-		duration: 30
-	}}
-	on:rxEmit={handleMM}
->
-</div>
-*/
+export function randomPositionOnRing(config = { ringRange: [50, 60], depthRange: [-15, 15] }): Vector3 {
+	const distanceFromCenter = randInt(config.ringRange[0], config.ringRange[1]);
+	const angle = randomAngle();
+	return new Vector3(
+		Math.cos(angle) * distanceFromCenter, // x
+		Math.sin(angle) * distanceFromCenter, // y
+		randInt(config.depthRange[0], config.depthRange[1]) // z
+	);
+}

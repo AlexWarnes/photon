@@ -1,169 +1,80 @@
-<!-- <script lang="ts">
-	import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls';
-    import { useThrelte } from '@threlte/core';
-    export const enableControls: any = (): void => {
-        PLC.lock();
-        console.log(PLC)
-    }
-    const { camera, renderer } = useThrelte();
-    const PLC = new PointerLockControls($camera, renderer?.domElement);
-
-    $: if (PLC) {
-        // enabled ? PLC.lock() : PLC.unlock();
-    }
-
-</script> -->
-
 <script lang="ts">
 	import { createEventDispatcher, onDestroy } from 'svelte'
-	import { Camera, Vector2, Vector3, Quaternion } from 'three'
-	import { useThrelte, useParent, useFrame, type Position } from '@threlte/core'
-
-	export let position: Position;
-	export let object: any = undefined
-	export let rotateSpeed = 1.0
-
-	export let idealOffset = { x: -1, y: 2, z: -3 }
-	export let idealLookAt = { x: 0, y: 1, z: 5 }
-
-	const currentPosition = new Vector3()
-	const currentLookAt = new Vector3()
-
-	let isOrbiting = false
-	let pointerDown = false
-
-	const rotateStart = new Vector2()
-	const rotateEnd = new Vector2()
-	const rotateDelta = new Vector2()
-
-	const axis = new Vector3(0, 1, 0)
-	const rotationQuat = new Quaternion()
-
-	const { renderer, invalidate } = useThrelte()
-	const domElement = renderer?.domElement
-	const camera = useParent()
-
-	const dispatch = createEventDispatcher()
-
-	if (!renderer)
-		throw new Error('Threlte Context missing: Is <PointerLockControls> a child of <Canvas>?')
-
-	if (!($camera instanceof Camera)) {
-		throw new Error('Parent missing: <PointerLockControls> need to be a child of a <Camera>')
-	}
-
-	domElement?.addEventListener('pointerdown', onPointerDown)
-	domElement?.addEventListener('pointermove', onPointerMove)
-	domElement?.addEventListener('pointerleave', onPointerLeave)
-	domElement?.addEventListener('pointerup', onPointerUp)
-
-	onDestroy(() => {
-		domElement?.removeEventListener('pointerdown', onPointerDown)
-		domElement?.removeEventListener('pointermove', onPointerMove)
-		domElement?.removeEventListener('pointerleave', onPointerLeave)
-		domElement?.removeEventListener('pointerup', onPointerUp)
-	})
-
-	// This is basically your update function
-	useFrame((_, delta) => {
-		// the object's position is bound to the prop
-		if (!position || !object) return
-
-		// camera is based on character so we rotation character first
-		rotationQuat.setFromAxisAngle(axis, -rotateDelta.x * rotateSpeed * delta)
-		object.quaternion.multiply(rotationQuat)
-
-		// then we calculate our ideal's
-		const offset = vectorFromObject(idealOffset)
-		const lookAt = vectorFromObject(idealLookAt)
-
-		// and how far we should move towards them
-		const t = 1.0 - Math.pow(0.001, delta)
-		currentPosition.lerp(offset, t)
-		currentLookAt.lerp(lookAt, t)
-
-		// then finally set the camera
-		$camera?.position.copy(currentPosition)
-		$camera?.lookAt(currentLookAt)
-	})
-
-	/** @param {PointerEvent} event */
-	function onPointerMove(event: any) {
-        console.log("PMove")
-		const { x, y } = event
-		if (pointerDown && !isOrbiting) {
-			// calculate distance from init down
-			const distCheck =
-				Math.sqrt(Math.pow(x - rotateStart.x, 2) + Math.pow(y - rotateStart.y, 2)) > 10
-			if (distCheck) {
-				isOrbiting = true
+		import { Euler, Camera } from 'three'
+		import { useThrelte, useParent } from '@threlte/core'
+	
+		// Set to constrain the pitch of the camera
+		// Range is 0 to Math.PI radians
+		export let minPolarAngle = 0 // radians
+		export let maxPolarAngle = Math.PI // radians
+		export let pointerSpeed = 1.0
+	
+		let isLocked = false
+	
+		const { renderer, invalidate } = useThrelte()
+		const domElement = renderer!.domElement
+		const camera = useParent()
+		const dispatch = createEventDispatcher()
+	
+		const _euler = new Euler(0, 0, 0, 'YXZ')
+		const _PI_2 = Math.PI / 2
+	
+		if (!renderer) {
+			throw new Error('Threlte Context missing: Is <PointerLockControls> a child of <Canvas>?')
+		}
+		if (!($camera instanceof Camera)) {
+			throw new Error('Parent missing: <PointerLockControls> need to be a child of a <Camera>')
+		}
+	
+		const onChange = () => {
+			invalidate('PointerLockControls: change event')
+			dispatch('change')
+		}
+	
+		export const lock = () => domElement.requestPointerLock()
+		export const unlock = () => document.exitPointerLock()
+	
+		domElement.addEventListener('mousemove', onMouseMove)
+		domElement.ownerDocument.addEventListener('pointerlockchange', onPointerlockChange)
+		domElement.ownerDocument.addEventListener('pointerlockerror', onPointerlockError)
+	
+		onDestroy(() => {
+			domElement.removeEventListener('mousemove', onMouseMove)
+			domElement.ownerDocument.removeEventListener('pointerlockchange', onPointerlockChange)
+			domElement.ownerDocument.removeEventListener('pointerlockerror', onPointerlockError)
+		})
+	
+		/**
+		 * @param {MouseEvent} event
+		 */
+		function onMouseMove(event: MouseEvent) {
+			if (!isLocked) return
+	
+			const { movementX, movementY } = event
+	
+			_euler.setFromQuaternion($camera!.quaternion)
+	
+			_euler.y -= movementX * 0.002 * pointerSpeed
+			_euler.x -= movementY * 0.002 * pointerSpeed
+	
+			_euler.x = Math.max(_PI_2 - maxPolarAngle, Math.min(_PI_2 - minPolarAngle, _euler.x))
+	
+			$camera?.quaternion.setFromEuler(_euler)
+	
+			onChange()
+		}
+	
+		function onPointerlockChange() {
+			if (document.pointerLockElement === domElement) {
+				dispatch('lock')
+				isLocked = true
+			} else {
+				dispatch('unlock')
+				isLocked = false
 			}
 		}
-		if (!isOrbiting) return
-
-		rotateEnd.set(x, y)
-		rotateDelta.subVectors(rotateEnd, rotateStart).multiplyScalar(rotateSpeed)
-		rotateStart.copy(rotateEnd)
-
-		invalidate('PointerLockcontrols: change event')
-		dispatch('change')
-	}
-
-	/** @param {PointerEvent} event */
-	function onPointerDown(event: any) {
-		const { x, y } = event
-		rotateStart.set(x, y)
-		pointerDown = true
-	}
-
-	function onPointerUp() {
-		rotateDelta.set(0, 0)
-		pointerDown = false
-		isOrbiting = false
-	}
-
-	function onPointerLeave() {
-		rotateDelta.set(0, 0)
-		pointerDown = false
-		isOrbiting = false
-	}
-
-	/** @param {{x:number,y:number,z:number}} vec */
-	function vectorFromObject(vec: Position) {
-		const { x, y, z } = vec
-		const ideal = new Vector3(x, y, z)
-		ideal.applyQuaternion(object.quaternion)
-		ideal.add(new Vector3(position.x, position.y, position.z))
-		return ideal
-	}
-
-	/** @param {KeyboardEvent} event */
-	function onKeyDown(event: any) {
-		switch (event.key) {
-			case 'a':
-				rotateDelta.x = -2 * rotateSpeed
-				break
-			case 'd':
-				rotateDelta.x = 2 * rotateSpeed
-				break
-			default:
-				break
+	
+		function onPointerlockError() {
+			console.error('PointerLockControls: Unable to use Pointer Lock API')
 		}
-	}
-
-	/** @param {KeyboardEvent} event */
-	function onKeyUp(event: any) {
-		switch (event.key) {
-			case 'a':
-				rotateDelta.x = 0
-				break
-			case 'd':
-				rotateDelta.x = 0
-				break
-			default:
-				break
-		}
-	}
 </script>
-
-<svelte:window on:keydown={onKeyDown} on:keyup={onKeyUp} />
