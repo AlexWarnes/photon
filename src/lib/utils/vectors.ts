@@ -21,6 +21,15 @@ export const oscillatingVector = () => {
 	return [v, v, v];
 };
 
+export const vec3OnSphere = (range: {min: number, max: number}) => {
+	const length = randInt(range.min, range.max);
+	return new Vector3(
+		randFloat(-Math.PI, Math.PI),
+		randFloat(-Math.PI, Math.PI),
+		randFloat(-Math.PI, Math.PI)
+	).clampLength(length, length);
+};
+
 const defaultMin: number = -25;
 const defaultMax: number = 25;
 const defaultVec3RangeOptions: [number, number] = [defaultMin, defaultMax];
