@@ -1,7 +1,9 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
+	import SvelteHead from '$lib/components/SvelteHead.svelte';
 </script>
 
+<SvelteHead />
 <Header />
 <header>
 	<div class="text-box">

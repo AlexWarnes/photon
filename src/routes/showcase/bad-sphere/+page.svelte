@@ -5,6 +5,7 @@
 	import Formula from './_routeLib/Formula.svelte';
 	import type { TrigFn, ZDimension, ZFactor } from './_routeLib/dataUtils';
 	import Spinner from './_routeLib/Spinner.svelte';
+	import SvelteHead from '$lib/components/SvelteHead.svelte';
 	let count = 5000;
 	let fn: TrigFn = '';
 	let zFactor: ZFactor = 'instanceRadius - maxRadius';
@@ -29,6 +30,16 @@
 	];
 	const zDimensionOptions: ZDimension[] = ['positive', 'negative', 'random'];
 </script>
+
+<SvelteHead
+	sharePath="/showcase/bad-sphere"
+	title="Bad Sphere"
+	description="Beautiful geometries made by mistake."
+	imagePath="/assets/bad-sphere-thumb.png"
+	imageAlt="Cyan dots on a black background in a circular winged geometric shape."
+	width="600"
+	height="600"
+/>
 
 <div class="canvas-wrapper">
 	<Canvas>
