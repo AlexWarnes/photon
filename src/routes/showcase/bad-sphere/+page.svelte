@@ -9,8 +9,10 @@
 	let fn: TrigFn = '';
 	let zFactor: ZFactor = 'instanceRadius - maxRadius';
 	let zDimension: ZDimension = 'random';
-	let showCode = false;
-	let disableInputs = false;
+	let showCode: boolean = false;
+	let disableInputs: boolean = false;
+	let autoRotate: boolean = true;
+	let showAxesHelper: boolean = true;
 
 	const fnOptions: TrigFn[] = ['', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan'];
 	const zFactorOptions: ZFactor[] = [
@@ -30,9 +32,11 @@
 
 <div class="canvas-wrapper">
 	<Canvas>
+		{#if showAxesHelper}
 		<Object3DInstance object={new AxesHelper(100)} />
+		{/if}
 		<PerspectiveCamera position={{ y: 100, z: 350 }} far={2000} fov={55}>
-			<OrbitControls autoRotate={true} />
+			<OrbitControls {autoRotate} />
 		</PerspectiveCamera>
 		<InstMeshDots {count} {fn} {zFactor} {zDimension} bind:disableInputs />
 	</Canvas>
@@ -76,9 +80,17 @@
 				{/each}
 			</select>
 		</label>
+		<label class="autoRotate-label show-code-label">
+			<input type="checkbox" bind:checked={autoRotate} />
+			AutoRotate
+		</label>
+		<label class="showAxesHelper-label show-code-label">
+			<input type="checkbox" bind:checked={showAxesHelper} />
+			AxesHelper
+		</label>
 		<label class="show-code-label">
 			<input type="checkbox" bind:checked={showCode} />
-			Show Pseudocode:
+			Show Math:
 		</label>
 		{#if showCode}
 			<div class="formula-box">

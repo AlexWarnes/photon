@@ -14,7 +14,7 @@
 	export let zDimension: ZDimension;
 	export let disableInputs: boolean = false;
 	
-	const geometry = new SphereGeometry(0.18);
+	const geometry = new SphereGeometry(0.2);
 	const material = new MeshBasicMaterial({color: 'cyan'});
 
 	let currentPos: Vector3[] = [];
@@ -56,7 +56,7 @@
 			for (let i = 0; i < instMesh.count; i++) {
 				if (currentPos[i].distanceTo(nextPos[i]) > 0.05) {
 					done = false;
-					currentPos[i].lerp(nextPos[i], 0.025)
+					currentPos[i].lerp(nextPos[i], 0.1)
 					matrix.setPosition(currentPos[i]);
 					instMesh.setMatrixAt(i, matrix);
 				}

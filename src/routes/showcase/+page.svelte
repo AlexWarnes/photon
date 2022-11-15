@@ -3,12 +3,20 @@
 
 	const scenes = [
 		{
+			name: 'Bad Sphere',
+			path: '/showcase/bad-sphere',
+			thumb: './assets/bad-sphere-thumb.png',
+			description:
+				'While attempting to create a sphere from points on a 2D circle, a series of mistakes created some beautiful geometry.',
+			tools: ['threlte', 'InstancedMesh']
+		},
+		{
 			name: 'Roll the Ball',
 			path: '/showcase/roll-the-ball',
 			thumb: './assets/roll-the-ball-thumb.png',
 			description:
 				'Roll the ball with arrows/wasd and jump with spacebar! Try to get the ball in the basket at the end of the track.',
-			tools: ['threlte', 'rapier',]
+			tools: ['threlte', 'rapier']
 		},
 		{
 			name: 'Attractors',
@@ -16,7 +24,7 @@
 			thumb: './assets/attractors-thumb.png',
 			description:
 				'Initial experiments with an attractor that simulates a source of gravity. Any rigid-body within range will be "pulled" toward the attractor.',
-			tools: ['threlte', 'rapier',]
+			tools: ['threlte', 'rapier']
 		},
 		{
 			name: 'Cannon Fire',
