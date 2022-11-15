@@ -3,7 +3,11 @@
 	import { World, } from '@threlte/rapier';
 	import { dynamicAttractors, } from './_routeLib/systemState';
 	import Scene from './_routeLib/Scene.svelte';
+	import SvelteHead from '$lib/components/SvelteHead.svelte';
 </script>
+
+<!-- TODO: Update -->
+<SvelteHead />
 
 <div class="wrapper">
 	<Canvas>

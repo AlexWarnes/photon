@@ -6,8 +6,12 @@
     import { slide } from "svelte/transition";
     import Scene from './_routeLib/Scene.svelte';
     import Timer from './_routeLib/Timer.svelte';
+	  import SvelteHead from '$lib/components/SvelteHead.svelte';
   </script>
   
+  <!-- TODO: Update -->
+  <SvelteHead />
+
   <Timer />
   <div class="wrapper">
     <Canvas>

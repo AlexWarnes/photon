@@ -7,6 +7,7 @@
 	import CannonViewRig from './_routeLib/CannonViewRig.svelte';
 	import TargetGroup from './_routeLib/TargetGroup.svelte';
 	import ShiftyBlockers from './_routeLib/ShiftyBlockers.svelte';
+	import SvelteHead from '$lib/components/SvelteHead.svelte';
 
 	let fire = false;
 </script>
@@ -19,6 +20,8 @@
 		} 
 	}}
 />
+<!-- TODO: Update -->
+<SvelteHead />
 
 <div class="canvas-wrapper" on:click={() => (fire = true)}>
 	<Canvas>

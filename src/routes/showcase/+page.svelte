@@ -1,5 +1,6 @@
 <script>
 	import Paper from '$lib/components/Paper.svelte';
+	import SvelteHead from '$lib/components/SvelteHead.svelte';
 
 	const scenes = [
 		{
@@ -98,6 +99,8 @@
 		}
 	];
 </script>
+
+<SvelteHead />
 
 <div class="grid-wrapper">
 	{#each scenes as scene (scene.path)}
