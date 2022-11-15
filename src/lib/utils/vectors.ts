@@ -78,7 +78,7 @@ export function randomVec3(range: Vec3RangeOptions = defaultVec3RangeOptions): V
 }
 
 export function randomAngle() {
-	return (randFloat(0, 0.99) * (2 * Math.PI));
+	return (randFloat(0, 2 * Math.PI));
 }
 
 export function randomPositionOnRing(config = { ringRange: [50, 60], depthRange: [-15, 15] }): Vector3 {
