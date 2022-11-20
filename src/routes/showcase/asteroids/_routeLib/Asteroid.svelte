@@ -1,7 +1,8 @@
 <script lang="ts" context="module">
 	const geometry = new IcosahedronGeometry();
 	const material = new MeshStandardMaterial({
-		color: 'magenta',
+		emissive: 'red',
+		emissiveIntensity: 1,
 		metalness: 0.8,
 		roughness: 0.1
 	});
@@ -11,15 +12,12 @@
 
 <script lang="ts">
 	import {
-		DirectionalLight,
-		AmbientLight,
 		Mesh,
-		Group,
 		useFrame,
 		type Position
 	} from '@threlte/core';
-	import { Collider, RigidBody, Attractor } from '@threlte/rapier';
-	import { onDestroy, onMount } from 'svelte';
+	import { Collider, } from '@threlte/rapier';
+	import { onMount } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import {
@@ -48,7 +46,6 @@
 	let contact = 0;
 
 	function handleHit(e: any) {
-		console.log('ASTEROID HIT:', e);
 		contact += 1;
 		$hits += 1;
 		if (contact >= maxHealth) {
@@ -78,18 +75,9 @@
 
 <Collider
 	shape="ball"
-	args={[scale]}
+	args={[scale + 0.1]}
 	on:collisionenter={handleHit}
 	position={{ x: $pX, y: $pY, z: $pZ }}
 >
 	<Mesh {geometry} {material} {scale} rotation={{ x: r, y: r }} />
-	{#if $settings.asteroidGravity}
-		<Mesh
-			geometry={new SphereGeometry()}
-			material={new MeshBasicMaterial({ color: 'coral', wireframe: true, transparent: true, opacity: 1 })}
-			scale={2 * scale}
-		>
-			<Attractor range={2 * scale} strength={500 * scale} />
-		</Mesh>
-	{/if}
 </Collider>

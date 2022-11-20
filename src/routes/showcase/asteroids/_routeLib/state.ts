@@ -11,15 +11,16 @@ export interface Asteroid {
   isFragment: boolean;
   floatTo: Position;
 }
+export type GameStatus = "READY" | "PLAY" | "OVER" | "WIN"
 const defaultSettings = {
 	invertedY: false, // todo
-  asteroidGravity: false,
 	// speed: 0.1
 };
 export const settings = writable(defaultSettings);
 export const points = writable(0);
 export const shots = writable(0);
 export const hits = writable(0);
+export const gameStatus = writable("READY")
 export const displayPoints = derived(points, ($p) => {
 	return String($p).padStart(6, '0');
 });
@@ -52,7 +53,8 @@ function generateAsteroid(asteroidConfig: Partial<Asteroid> = {}): Asteroid {
 			z: Math.cos(angle) * distanceFromCenter
 		},
 		scale: asteroidConfig.scale ? asteroidConfig.scale * 2 : defaultScale,
-		maxHealth: asteroidConfig.scale ? asteroidConfig.scale * 2 : defaultScale * 2,
+		maxHealth: 1,
+		// maxHealth: asteroidConfig.scale ? asteroidConfig.scale * 2 : defaultScale * 2,
 		linVel: { x: 0, y: 0, z: 0 },
     isFragment: false,
     floatTo: new Vector3(),

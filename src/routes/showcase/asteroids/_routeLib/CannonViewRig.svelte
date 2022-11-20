@@ -64,12 +64,16 @@
 </script>
 
 <Group {position} {rotation}>
-	<PerspectiveCamera fov={60} />
+
+	<!-- NOTE: would be useful to designate fireOriginPosition and slotPosition so 
+	the rigid body projectiles don't collide with a potentially rigid body source in slot -->
+
+	<!-- Projectile Origin Position -->
 	<Group
 		position={{
 			x: 0,
 			y: -2,
-			z: -3
+			z: -10
 		}}
 	>
 		{#if showCannon}
@@ -82,6 +86,5 @@
 			{/if}
 		{/each}
 
-		<slot />
 	</Group>
 </Group>

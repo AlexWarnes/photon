@@ -8,7 +8,7 @@
 		MeshStandardMaterial,
 		SphereGeometry
 	} from 'three';
-	import { asteroids, points, speed } from './state';
+	import { asteroids, gameStatus, speed } from './state';
 	import Effects from './Effects.svelte';
 	import Player from './Player.svelte';
 	import Planet from './Planet.svelte';
@@ -20,22 +20,23 @@
 		r += $speed * delta;
 	});
 
-	$: console.log('Speed:', $speed);
-
 	// $: if ($points) {
 	// 	// every 100 points, incr 0.05
 	// 	$speed = ($points / 100);
 	// }
 </script>
 
-<DirectionalLight shadow intensity={1} position={{ x: 10, y: 1, z: 0 }} />
+<DirectionalLight shadow intensity={1.5} position={{ x: 10, y: 1, z: 0 }} />
+<!-- <DirectionalLight shadow intensity={1} position={{ x: 0, y: 10, z: 20 }} /> -->
 <AmbientLight intensity={0.5} />
 
 <Group position={{ y: -390, z: -100 }} rotation={{ x: r }}>
 	<Planet />
-	{#each $asteroids as rock (rock.id)}
-		<Asteroid {...rock} />
-	{/each}
+	{#if $gameStatus !== 'READY'}
+		{#each $asteroids as rock (rock.id)}
+			<Asteroid {...rock} />
+		{/each}
+	{/if}
 </Group>
 <Player />
 <Effects />
