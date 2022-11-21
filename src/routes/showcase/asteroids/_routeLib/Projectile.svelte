@@ -27,7 +27,7 @@
 	>
 		<Collider shape={'ball'} args={[0.125]} mass={500} restitution={1} on:collisionenter>
 			<Instance scale={projectileScale}>
-				<AxisHelper length={10} />
+				<!-- <AxisHelper length={10} /> -->
 			</Instance>
 		</Collider>
 	</RigidBody>

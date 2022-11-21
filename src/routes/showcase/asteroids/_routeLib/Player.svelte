@@ -1,78 +1,120 @@
 <script lang="ts">
-	import { useFrame, Group, useThrelteRoot } from '@threlte/core';
+	import { useFrame } from '@threlte/core';
+	import { RigidBody, Collider } from '@threlte/rapier';
 	import { useKeyboardControls } from 'svelte-kbc';
-	import { MeshStandardMaterial, Vector3 } from 'three';
+	import { MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 	import { tweened } from 'svelte/motion';
 	import CannonViewRig from './CannonViewRig.svelte';
-	import { onMount } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { degToRad } from 'three/src/math/MathUtils';
 	import Ship from './Ship.svelte';
-	import { settings } from './state';
+	import { gameStatus } from './state';
+	import CameraRig from './CameraRig.svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import { randomVec3 } from '$lib';
 	const { FIRE, UP, DOWN, LEFT, RIGHT, ROLL } = useKeyboardControls();
-
+	const rbX: Writable<number> = writable(0);
+	const rbY: Writable<number> = writable(0);
+	const rbZ: Writable<number> = writable(0);
 	let fire: any;
-	const projectileMaterial = new MeshStandardMaterial({ color: 'red' });
+	const projectileMaterial = new MeshStandardMaterial({ color: 'green' });
 
-	let posX = tweened(0, { duration: 750, easing: cubicOut });
-	let posY = tweened(0, { duration: 750, easing: cubicOut });
-
+	let rbRef: any;
+	const defaultV3 = new Vector3(0, 0, 0);
 	let shipRotZ = tweened(0, { duration: 750, easing: cubicOut });
 	let shipRotX = tweened(0, { duration: 750, easing: cubicOut });
-	let lockZ = false;
-	let moveDistance = 5;
+	let movePower = 1;
+
+	function updateRBPosition(rbPosition: Vector3) {
+		const { x, y, z } = rbPosition;
+		rbX.set(Number(x.toFixed(2)));
+		rbY.set(Number(y.toFixed(2)));
+		rbZ.set(Number(z.toFixed(2)));
+	}
 
 	function levelOut() {
 		$shipRotX = 0;
 	}
 
-	useFrame(() => {
-		if ($FIRE) fire();
-	});
-	// $: if ($FIRE) fire();
-	$: if ($UP && $posY < 40) {
-		$shipRotX = Math.PI / 6;
-		$posY += moveDistance;
-	} else {
-		levelOut();
-	}
-	$: if ($DOWN && $posY > -40) {
-		$shipRotX = -Math.PI / 6;
-		$posY -= moveDistance;
-	} else {
-		levelOut();
-	}
-	$: if ($LEFT && $posX > -100) {
-		$shipRotZ = -Math.PI / 4;
-		$posX -= moveDistance;
-	} else {
-		$shipRotZ = 0;
-	}
-	$: if ($RIGHT && $posX < 100) {
-		$shipRotZ = Math.PI / 4;
-		$posX += moveDistance;
-	} else {
-		$shipRotZ = 0;
+	let v3 = new Vector3(0, 0, 0);
+	function applyMovement() {
+		const { x, y } = rbRef.translation();
+		if ($UP && y < 40) {
+			$shipRotX = Math.PI / 6;
+			rbRef.applyImpulse(v3.set(0, movePower, 0), true);
+		} else {
+			levelOut();
+		}
+
+		if ($DOWN && y > -40) {
+			$shipRotX = -Math.PI / 6;
+			rbRef.applyImpulse(v3.set(0, -movePower, 0), true);
+		} else {
+			levelOut();
+		}
+
+		if ($LEFT && x > -100) {
+			$shipRotZ = -Math.PI / 4;
+			rbRef.applyImpulse(v3.set(-movePower, 0, 0), true);
+		} else {
+			$shipRotZ = 0;
+		}
+
+		if ($RIGHT && x < 100) {
+			$shipRotZ = Math.PI / 4;
+			rbRef.applyImpulse(v3.set(movePower, 0, 0), true);
+		} else {
+			$shipRotZ = 0;
+		}
 	}
 
-	// Buggy barrel roll O__O
-	$: if ($ROLL && !lockZ && !($RIGHT || $LEFT)) {
-		lockZ = true;
-		shipRotZ.set($shipRotZ + 2 * Math.PI).then(() => (lockZ = false));
+	useFrame((_, delta) => {
+		if ($gameStatus === 'PLAY') {
+			applyMovement();
+			if ($FIRE) fire();
+		}
+		updateRBPosition(rbRef.translation());
+	});
+
+	function handleShipContact() {
+		$gameStatus = 'OVER';
+	}
+
+	$: if (rbRef && $gameStatus === 'READY') {
+		rbRef.setAngvel(defaultV3);
+		rbRef.setLinvel(defaultV3);
+		rbRef.setTranslation(defaultV3, true);
+		rbRef.setRotation(new Quaternion(0, 0, 0, 1), true);
 	}
 </script>
 
-<CannonViewRig
-	bind:fire
-	showCannon={false}
-	{projectileMaterial}
-	position={{ x: $posX, y: $posY, z: 0 }}
-	aimOffset={100}
-	power={100}
-	fireOnClick={true}
-	projectileScale={0.125}
-	aimVector={{ x: 0, y: $shipRotX, z: -1 }}
-	projectileDuration={2000}
+{#if $gameStatus === 'PLAY'}
+	<CannonViewRig
+		bind:fire
+		{projectileMaterial}
+		position={{ x: Math.round($rbX), y: Math.round($rbY), z: Math.round($rbZ) }}
+		power={100}
+		fireOnClick={true}
+		projectileScale={0.125}
+		aimVector={{ x: 0, y: $shipRotX, z: -1 }}
+		projectileDuration={2000}
+	/>
+{/if}
+<RigidBody
+	angularDamping={$gameStatus === 'OVER' ? 0 : 2.75}
+	linearDamping={$gameStatus === 'OVER' ? 0 : 2.75}
+	bind:rigidBody={rbRef}
+	gravityScale={1}
+	angularVelocity={$gameStatus === 'OVER' ? randomVec3() : defaultV3}
+	position={defaultV3}
 >
+	<Collider
+		shape="cuboid"
+		args={[2, 0.75, 2]}
+		mass={1}
+		on:contact={handleShipContact}
+		position={{ y: 0.75 }}
+	/>
 	<Ship rotZ={$shipRotZ} rotX={$shipRotX} />
-</CannonViewRig>
+</RigidBody>
+
+<CameraRig x={$rbX} y={$rbY} z={$rbZ} />
