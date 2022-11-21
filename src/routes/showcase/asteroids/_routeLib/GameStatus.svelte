@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameStatus } from './state';
+	import { displayPoints, gameStatus, reset, stats } from './state';
 </script>
 
 <div class="box">
@@ -7,10 +7,16 @@
 		<button on:click={() => ($gameStatus = 'PLAY')}>PLAY</button>
 	{:else if $gameStatus === 'OVER'}
 		<h2>GAME OVER</h2>
-		<button on:click={() => ($gameStatus = 'READY')}>TRY AGAIN</button>
+		<div class="stat-box">
+			<p>SCORE: {$displayPoints}</p>
+			<p>SHOTS: {$stats.shots}</p>
+			<p>HITS: {$stats.hits}</p>
+			<p>ACCURACY: {$stats.accuracy}%</p>
+		</div>
+		<button on:click={reset}>TRY AGAIN</button>
 	{:else}
-  <h2>VICTORY</h2>
-  <button on:click={() => ($gameStatus = 'READY')}>PLAY AGAIN</button>
+		<h2>VICTORY</h2>
+		<button on:click={reset}>PLAY AGAIN</button>
 	{/if}
 </div>
 
@@ -23,26 +29,31 @@
 		justify-content: center;
 		align-items: center;
 		padding: 1rem;
-		background-color: #00000018;
 		position: fixed;
 		top: 0;
 		left: 0;
-    color: red;
+		color: red;
 	}
 
-  h2 {
-    font-size: 5rem;
-    background: #000000a8;
-    padding: 1rem;
-    border: 5px inset red;
-  }
+	.stat-box {
+		padding: 1rem;
+		margin: 1rem;
+		background: #000000a8;
+	}
 
-  button {
-    font-size: 2rem;
-    background: black;
-    color: limegreen;
-    padding: 1rem;
-    border: 5px inset limegreen;
-  }
+	h2 {
+		font-size: 5rem;
+		margin-bottom: 0;
+		background: #000000a8;
+		padding: 1rem;
+		border: 5px inset red;
+	}
 
+	button {
+		font-size: 2rem;
+		background: #000000a8;
+		color: limegreen;
+		padding: 1rem;
+		border: 5px inset limegreen;
+	}
 </style>

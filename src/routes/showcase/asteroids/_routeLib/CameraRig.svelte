@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { PerspectiveCamera } from '@threlte/core';
+	import { OrthographicCamera, PerspectiveCamera } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-	import { gameStatus } from './state';
+	import { gameStatus, orthoMode } from './state';
 
 	const initialCameraPosition = {
 		x: 0,
@@ -14,18 +14,14 @@
 	export let y: number;
 	export let z: number;
 
-	// const x = selectRigidBodyPos('x');
-	// const y = selectRigidBodyPos('y');
-	// const z = selectRigidBodyPos('z');
-
 	const camX = tweened(x, { duration: 300, easing: cubicOut });
 	const camY = tweened(y, { duration: 300, easing: cubicOut });
 	const camZ = tweened(z, { duration: 1000, easing: cubicOut });
 
 	let positionOffset = {
 		x: 0,
-		y: 2.5,
-		z: 4
+		y: 4.5,
+		z: 8
 	};
 
 	$: if (isNaN(x)) {
@@ -47,20 +43,32 @@
 	$: if ($gameStatus === 'PLAY') {
 		positionOffset = {
 			x: 0,
-			y: 2.5,
-			z: 4
+			y: 4.5,
+			z: 8
 		};
 	} else if ($gameStatus === 'OVER') {
-    positionOffset = {
-    x: 0,
-    y: 2.5,
-    z: 30
-  }
-  }
+		positionOffset = {
+			x: 0,
+			y: 2.5,
+			z: 30
+		};
+	}
 </script>
 
-<PerspectiveCamera
-	position={{ x: $camX, y: $camY, z: $camZ }}
-	lookAt={{ x: $camX, y: $camY - 2, z: $camZ - 10 }}
-	fov={60}
-/>
+{#if $orthoMode}
+	<OrthographicCamera
+		near={0.1}
+		left={-30}
+		right={30}
+		top={30}
+		bottom={-30}
+		position={{ x: 15, y: 25, z: 30 }}
+		lookAt={{ x: $camX, y: $camY, z: -50 }}
+	/>
+{:else}
+	<PerspectiveCamera
+		position={{ x: $camX, y: $camY, z: $camZ }}
+		lookAt={{ x: $camX, y: $camY - 2, z: $camZ - 10 }}
+		fov={60}
+	/>
+{/if}

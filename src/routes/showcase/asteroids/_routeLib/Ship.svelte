@@ -9,7 +9,6 @@
 <GLTF
 	url="https://alexwarnes.github.io/assets/models/starfox_ship/scene.gltf"
 	rotation={{ x: rotX, y: Math.PI, z: rotZ }}
-	position={{ y: -1.9, z: -4 }}
 >
 	<!-- <Reticule TODO /> -->
 </GLTF>

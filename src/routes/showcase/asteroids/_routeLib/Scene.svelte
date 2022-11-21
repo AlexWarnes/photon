@@ -1,13 +1,5 @@
 <script lang="ts">
-	import { DirectionalLight, AmbientLight, Mesh, Group, useFrame } from '@threlte/core';
-	import { Collider } from '@threlte/rapier';
-	import {
-		BackSide,
-		CylinderGeometry,
-		IcosahedronGeometry,
-		MeshStandardMaterial,
-		SphereGeometry
-	} from 'three';
+	import { DirectionalLight, AmbientLight, Group, useFrame } from '@threlte/core';
 	import { asteroids, gameStatus, speed } from './state';
 	import Effects from './Effects.svelte';
 	import Player from './Player.svelte';
@@ -20,10 +12,6 @@
 		r += $speed * delta;
 	});
 
-	// $: if ($points) {
-	// 	// every 100 points, incr 0.05
-	// 	$speed = ($points / 100);
-	// }
 </script>
 
 <DirectionalLight shadow intensity={1.5} position={{ x: 10, y: 1, z: 0 }} />

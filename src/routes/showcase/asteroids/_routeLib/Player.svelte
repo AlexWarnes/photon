@@ -9,22 +9,26 @@
 	import Ship from './Ship.svelte';
 	import { gameStatus } from './state';
 	import CameraRig from './CameraRig.svelte';
-	import { onMount } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import { randomVec3 } from '$lib';
 	const { FIRE, UP, DOWN, LEFT, RIGHT, ROLL } = useKeyboardControls();
-
+	const rbX: Writable<number> = writable(0);
+	const rbY: Writable<number> = writable(0);
+	const rbZ: Writable<number> = writable(0);
 	let fire: any;
 	const projectileMaterial = new MeshStandardMaterial({ color: 'green' });
 
 	let rbRef: any;
-	const defaultPlayerPosition = new Vector3(0,0,0)
+	const defaultV3 = new Vector3(0, 0, 0);
 	let shipRotZ = tweened(0, { duration: 750, easing: cubicOut });
 	let shipRotX = tweened(0, { duration: 750, easing: cubicOut });
-	// let lockZ = false;
-	let movePower = 2;
+	let movePower = 1;
 
-	let camV3: Vector3;
-	function updateCamera(rbPosition: Vector3) {
-		camV3 = rbPosition;
+	function updateRBPosition(rbPosition: Vector3) {
+		const { x, y, z } = rbPosition;
+		rbX.set(Number(x.toFixed(2)));
+		rbY.set(Number(y.toFixed(2)));
+		rbZ.set(Number(z.toFixed(2)));
 	}
 
 	function levelOut() {
@@ -64,63 +68,53 @@
 	}
 
 	useFrame((_, delta) => {
-		if($gameStatus === "PLAY"){
+		if ($gameStatus === 'PLAY') {
 			applyMovement();
 			if ($FIRE) fire();
 		}
-		updateCamera(rbRef.translation());
+		updateRBPosition(rbRef.translation());
 	});
 
-	function handleShipContact(){
-		// TODO
-		$gameStatus = "OVER";
-		// angularVelocity?
+	function handleShipContact() {
+		$gameStatus = 'OVER';
 	}
 
-	$: if (rbRef && $gameStatus === "READY") {
-		rbRef.setTranslation(defaultPlayerPosition, true);
-		rbRef.setRotation(new Quaternion(0,0,0,1), true)
+	$: if (rbRef && $gameStatus === 'READY') {
+		rbRef.setAngvel(defaultV3);
+		rbRef.setLinvel(defaultV3);
+		rbRef.setTranslation(defaultV3, true);
+		rbRef.setRotation(new Quaternion(0, 0, 0, 1), true);
 	}
-	// TODO: angularVelocity barrel roll O__O
-	// $: if ($ROLL && !lockZ && !($RIGHT || $LEFT)) {
-	// 	lockZ = true;
-	// 	shipRotZ.set($shipRotZ + 2 * Math.PI).then(() => (lockZ = false));
-	// }
-
-	// TODO: stop linear/angular velocity on rbRef reset
-	// TODO: distinctUntilChanged camV3 axis values for camera and CVR
-	// TODO: fix CVR position lag on projectiles when moving L/R
-	// TODO: angularVelocity on ship contact
-	// TODO: scale in asteroids
-	// TODO: postprocessing
-	// TODO: Easy Medium Hard for asteroid count & speed?
-	// TODO: HULL vs 3P view?
-	$: console.log(camV3?.x)
 </script>
 
-{#if $gameStatus === "PLAY"}
-<CannonViewRig
-	bind:fire
-	showCannon={false}
-	{projectileMaterial}
-	position={camV3 || defaultPlayerPosition}
-	aimOffset={100}
-	power={100}
-	fireOnClick={true}
-	projectileScale={0.125}
-	aimVector={{ x: 0, y: $shipRotX, z: -1 }}
-	projectileDuration={2000}
-/>
+{#if $gameStatus === 'PLAY'}
+	<CannonViewRig
+		bind:fire
+		{projectileMaterial}
+		position={{ x: Math.round($rbX), y: Math.round($rbY), z: Math.round($rbZ) }}
+		power={100}
+		fireOnClick={true}
+		projectileScale={0.125}
+		aimVector={{ x: 0, y: $shipRotX, z: -1 }}
+		projectileDuration={2000}
+	/>
 {/if}
 <RigidBody
-	angularDamping={0.75}
-	linearDamping={0.75}
+	angularDamping={$gameStatus === 'OVER' ? 0 : 2.75}
+	linearDamping={$gameStatus === 'OVER' ? 0 : 2.75}
 	bind:rigidBody={rbRef}
-	gravityScale={0.1}
-	position={defaultPlayerPosition}
+	gravityScale={1}
+	angularVelocity={$gameStatus === 'OVER' ? randomVec3() : defaultV3}
+	position={defaultV3}
 >
-	<Collider shape="cuboid" args={[2,1,2]} mass={1} on:contact={handleShipContact} />
+	<Collider
+		shape="cuboid"
+		args={[2, 0.75, 2]}
+		mass={1}
+		on:contact={handleShipContact}
+		position={{ y: 0.75 }}
+	/>
 	<Ship rotZ={$shipRotZ} rotX={$shipRotX} />
 </RigidBody>
 
-<CameraRig x={!!camV3 ? camV3.x : NaN} y={!!camV3 ? camV3.y : NaN} z={!!camV3 ? camV3.z : NaN} />
+<CameraRig x={$rbX} y={$rbY} z={$rbZ} />
