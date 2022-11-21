@@ -43,7 +43,7 @@
 
 	h2 {
 		font-size: 5rem;
-		margin-bottom: 0;
+		margin-bottom: 1rem;
 		background: #000000a8;
 		padding: 1rem;
 		border: 5px inset red;

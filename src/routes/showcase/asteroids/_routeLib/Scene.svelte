@@ -12,6 +12,10 @@
 		r += $speed * delta;
 	});
 
+	$: if ($asteroids.length === 0){
+		$gameStatus = "WIN"
+	}
+
 </script>
 
 <DirectionalLight shadow intensity={1.5} position={{ x: 10, y: 1, z: 0 }} />

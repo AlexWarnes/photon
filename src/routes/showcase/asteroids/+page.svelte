@@ -48,17 +48,4 @@
 		left: 0;
 		width: 100%;
 	}
-
-	.points {
-		position: absolute;
-		bottom: 5rem;
-		right: 1rem;
-		margin: 0;
-		font-size: 5rem;
-		color: red;
-		font-variant-numeric: tabular-nums;
-		text-shadow: 0 0 2rem red;
-		display: flex;
-		flex-direction: column;
-	}
 </style>
