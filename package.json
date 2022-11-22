@@ -29,7 +29,7 @@
 		"svelte-check": "^2.2.6",
 		"svelte-cubed": "^0.2.1",
 		"svelte-fuse-rx": "^0.0.106",
-		"svelte-kbc": "^0.0.5",
+		"svelte-kbc": "^0.0.7",
 		"svelte-preprocess": "^4.10.1",
 		"svelte-sequential-preprocessor": "^0.0.7",
 		"svelte2tsx": "^0.5.10",
