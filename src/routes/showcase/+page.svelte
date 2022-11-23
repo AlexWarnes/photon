@@ -4,6 +4,14 @@
 
 	const scenes = [
 		{
+			name: 'Asteroids',
+			path: '/showcase/asteroids',
+			thumb: './assets/asteroids-thumb.png',
+			description:
+				'Fly your ship (arrows/wasd) and shoot down all the asteroids with spacebar!',
+			tools: ['threlte', 'rapier', 'postprocessing']
+		},
+		{
 			name: 'Bad Sphere',
 			path: '/showcase/bad-sphere',
 			thumb: './assets/bad-sphere-thumb.png',

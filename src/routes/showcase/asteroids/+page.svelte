@@ -1,5 +1,4 @@
 <script lang="ts">
-	// 	My attempt to recreate the game from Bruno Simon's tweet: https://twitter.com/bruno_simon/status/1572301729894666240
 	import { Canvas } from '@threlte/core';
 	import { World } from '@threlte/rapier';
 	import { KeyboardControls } from 'svelte-kbc';

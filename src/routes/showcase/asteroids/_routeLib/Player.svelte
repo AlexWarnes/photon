@@ -70,7 +70,9 @@
 	useFrame((_, delta) => {
 		if ($gameStatus === 'PLAY') {
 			applyMovement();
-			if ($FIRE) fire();
+			if ($FIRE) {
+				fire();
+			}
 		}
 		updateRBPosition(rbRef.translation());
 	});
@@ -84,8 +86,11 @@
 		rbRef.setLinvel(defaultV3);
 		rbRef.setTranslation(defaultV3, true);
 		rbRef.setRotation(new Quaternion(0, 0, 0, 1), true);
+		fire = null;
 	}
 </script>
+
+<svelte:body on:touchstart={() => ($FIRE = true)} on:touchend={() => ($FIRE = false)} />
 
 {#if $gameStatus === 'PLAY'}
 	<CannonViewRig
@@ -93,7 +98,6 @@
 		{projectileMaterial}
 		position={{ x: Math.round($rbX), y: Math.round($rbY), z: Math.round($rbZ) }}
 		power={100}
-		fireOnClick={true}
 		projectileScale={0.125}
 		aimVector={{ x: 0, y: $shipRotX, z: -1 }}
 		projectileDuration={2000}

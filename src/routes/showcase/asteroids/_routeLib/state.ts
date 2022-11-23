@@ -19,8 +19,8 @@ const defaultSettings = {
 
 export const difficulty = writable<Difficulty>("MARTIAN");
 export const asteroidsByDifficulty = {
-	"EARTHER": 25,
-	"MARTIAN": 50,
+	"EARTHER": 10,
+	"MARTIAN": 30,
 	"BELTER": 100,
 }
 

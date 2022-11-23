@@ -22,7 +22,7 @@
 	import { tweened } from 'svelte/motion';
 	import { IcosahedronGeometry, MeshStandardMaterial } from 'three';
 	import { randFloat } from 'three/src/math/MathUtils';
-	import { destroyAsteroid, points, splitAsteroid, hits, orthoMode, } from './state';
+	import { destroyAsteroid, points, splitAsteroid, hits, orthoMode } from './state';
 	export let position: Position;
 	export let scale: number;
 	export let id: string;
@@ -44,12 +44,13 @@
 		$hits += 1;
 		if (contact >= maxHealth) {
 			handleOrthoMode();
-			$points += 20 - scale;
 			if (scale >= 8) {
 				splitAsteroid(id, { x: $pX, y: $pY, z: $pZ });
+				points.update((p) => p + (25 - scale));
 			} else {
 				s.set(0).then(() => {
 					destroyAsteroid(id);
+					points.update((p) => p + (25 - scale));
 				});
 			}
 		}

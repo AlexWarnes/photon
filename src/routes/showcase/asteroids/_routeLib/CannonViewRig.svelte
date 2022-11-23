@@ -11,6 +11,7 @@
 	import Projectile from './Projectile.svelte';
 	import type { Material } from 'three';
 	import { shots } from './state';
+	import { onDestroy } from 'svelte';
 
 	export function fire() {
 		$shots += 1;
@@ -22,14 +23,12 @@
 	// export let aimOffset: number = 100;
 	export let projectileMaterial: Material | undefined = undefined;
 	export let projectileDuration: number = 10000;
-	export let fireOnClick: boolean = true;
 	export let castShadow: boolean = true;
 	export let projectileScale: Scale = 0.5;
 	// TODO: export let pointerLock: boolean = false;
 	export let aimVector: { x: number; y: number; z: number } = { x: 0, y: Math.PI / 4, z: -1 };
 
-	const { raycaster } = useThrelteRoot();
-	const { renderer, pointer } = useThrelte();
+	const { renderer, } = useThrelte();
 
 	let firingSolutions: any[] = [];
 
@@ -51,11 +50,6 @@
 		firingSolutions = [...firingSolutions, config];
 	}
 
-	$: if (fireOnClick) {
-		renderer?.domElement.addEventListener('click', fire);
-	} else {
-		renderer?.domElement.removeEventListener('click', fire);
-	}
 </script>
 
 <Group {position} {rotation}>
