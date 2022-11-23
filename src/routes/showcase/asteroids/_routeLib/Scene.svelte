@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DirectionalLight, AmbientLight, Group, useFrame } from '@threlte/core';
-	import { asteroids, gameStatus, speed } from './state';
+	import { asteroids, gameStatus, speed, difficulty, initAsteroids } from './state';
 	import Effects from './Effects.svelte';
 	import Player from './Player.svelte';
 	import Planet from './Planet.svelte';
@@ -12,14 +12,14 @@
 		r += $speed * delta;
 	});
 
-	$: if ($asteroids.length === 0){
+	$: if ($asteroids?.length === 0){
 		$gameStatus = "WIN"
 	}
 
+	$: initAsteroids($difficulty)
 </script>
 
 <DirectionalLight shadow intensity={1.5} position={{ x: 10, y: 1, z: 0 }} />
-<!-- <DirectionalLight shadow intensity={1} position={{ x: 0, y: 10, z: 20 }} /> -->
 <AmbientLight intensity={0.5} />
 
 <Group position={{ y: -390, z: -100 }} rotation={{ x: r }}>

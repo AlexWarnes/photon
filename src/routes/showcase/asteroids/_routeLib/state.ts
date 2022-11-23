@@ -1,5 +1,5 @@
 import type { Position } from '@threlte/core';
-import { writable, derived } from 'svelte/store';
+import { writable, derived, get } from 'svelte/store';
 import { Vector3 } from 'three';
 import { generateUUID, randInt } from 'three/src/math/MathUtils';
 export interface Asteroid {
@@ -12,12 +12,19 @@ export interface Asteroid {
 	orthoTrigger: boolean;
 }
 export type GameStatus = 'READY' | 'PLAY' | 'OVER' | 'WIN';
+export type Difficulty = 'EARTHER' | 'MARTIAN' | 'BELTER';
 const defaultSettings = {
-	invertedY: false // todo
+	invertedY: false, // todo
 };
-const asteroidCount = 75;
 
-export const asteroids = writable(initAsteroids(asteroidCount));
+export const difficulty = writable<Difficulty>("MARTIAN");
+export const asteroidsByDifficulty = {
+	"EARTHER": 25,
+	"MARTIAN": 50,
+	"BELTER": 100,
+}
+
+export const asteroids = writable<Asteroid[]>()
 export const settings = writable(defaultSettings);
 export const points = writable(0);
 export const shots = writable(0);
@@ -47,7 +54,8 @@ export function reset() {
 	shots.set(0);
 	hits.set(0);
 	orthoMode.set(false);
-	asteroids.set(initAsteroids(asteroidCount));
+	settings.set(defaultSettings)
+	initAsteroids(get(difficulty));
 	gameStatus.set('READY');
 }
 // const distanceFromCenter = 400;
@@ -56,7 +64,7 @@ function randAngle() {
 }
 function generateAsteroid(asteroidConfig: Partial<Asteroid> = {}): Asteroid {
 	const angle = randAngle();
-	const defaultScale = 4;
+	const defaultScale = 8;
 	const distanceFromCenter = randInt(365, 435);
 
 	return {
@@ -76,13 +84,12 @@ function generateAsteroid(asteroidConfig: Partial<Asteroid> = {}): Asteroid {
 		...asteroidConfig
 	};
 }
-function initAsteroids(count: number) {
-	const ast = Array(count)
+export function initAsteroids(d: Difficulty) {
+	const count = asteroidsByDifficulty[d];
+	const ast: Asteroid[] = Array(count)
 		.fill('x')
-		.map(() => generateAsteroid({ scale: randInt(2, 8) }));
-	
-		ast[ast.length - 1].orthoTrigger = true;
-		return ast;
+		.map(() => generateAsteroid({ scale: randInt(6, 12) }));
+		asteroids.set(ast);
 }
 
 export function splitAsteroid(id: string, origin: Position) {

@@ -13,7 +13,7 @@
 	export let outerRadius: number = 500;
 
 	const geometry = new SphereGeometry(0.5);
-	const material = new MeshBasicMaterial({ color: 'lightsalmon' });
+	const material = new MeshBasicMaterial({ color: 'white' });
 
 	let instMesh: InstancedMesh;
 	function initMesh(c: number, r: Range): void {

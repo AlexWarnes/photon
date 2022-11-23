@@ -5,5 +5,5 @@
 </script>
 
 <Group {rotation}>
-	<StarField count={1000} innerRadius={400} outerRadius={800} />
+	<StarField count={300} innerRadius={400} outerRadius={800} />
 </Group>

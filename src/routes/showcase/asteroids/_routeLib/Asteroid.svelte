@@ -44,8 +44,8 @@
 		$hits += 1;
 		if (contact >= maxHealth) {
 			handleOrthoMode();
-			$points += 10 - scale;
-			if (scale >= 3) {
+			$points += 20 - scale;
+			if (scale >= 8) {
 				splitAsteroid(id, { x: $pX, y: $pY, z: $pZ });
 			} else {
 				s.set(0).then(() => {
