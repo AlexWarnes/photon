@@ -2,13 +2,14 @@ import { sveltekit } from '@sveltejs/kit/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit()],
-	ssr: {
-		noExternal: ['three', 'troika-three-text']
+	// legacy: { buildSsrCjsExternalHeuristics: true },
+	optimizeDeps: {
+		include: ['postprocessing',]
 	},
-	prerender: {
-		default: true
-	}
+	ssr: {
+		noExternal: ['three', 'troika-three-text', 'postprocessing',]
+	},
+	plugins: [sveltekit()],
 };
 
 export default config;
