@@ -1,3 +1,6 @@
+import type { Writable } from "svelte/store";
+import type { IUniform, Vector2 } from "three";
+
 export type RequestStatus = 'LOADING' | 'ERROR' | 'SUCCESS';
 
 export interface OptionConfig {
@@ -28,3 +31,17 @@ export interface Vec3RangeObj {
 }
 
 export type Vec3RangeOptions = Vec3RangeObj | [number, number];
+
+
+// SHADER STUFF
+export interface ThrelteUniforms {
+	// u_time: { type: 'f'; value: number };
+	// u_resolution: { type: 'v2'; value: Vector2 };
+	// u_mouse: { type: 'v2'; value: Vector2 };
+	// u_mouse_norm: { type: 'v2'; value: Vector2 };
+	[uniform: string]: IUniform<any>;
+}
+export interface ShaderContext {
+	uniforms: Writable<ThrelteUniforms>
+}
+

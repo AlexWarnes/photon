@@ -1,3 +1,6 @@
+import type { ShaderContext } from "$lib/ts-models/general";
+import { getContext } from "svelte";
+
 export const glazeProps = {
 	roughness: 0.15,
 	transmission: 1,
@@ -12,4 +15,8 @@ export function randomColor(): string {
 		color += letters[Math.round(Math.random() * 15)];
 	}
 	return color;
+}
+
+export function useShader(): ShaderContext{
+	return getContext('threlte-shader')
 }

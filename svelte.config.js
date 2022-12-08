@@ -9,7 +9,12 @@ const config = {
 	// for more information about preprocessors
 	preprocess: seqPreprocessor([
 		preprocess(),
-		preprocessThrelte()
+		preprocessThrelte({
+			extensions: {
+				// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+				'three/examples/jsm/controls/FirstPersonControls': ['FirstPersonControls']
+			}
+		})
 	]),
 
 	kit: {
