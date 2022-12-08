@@ -2,12 +2,11 @@ import { sveltekit } from '@sveltejs/kit/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	// legacy: { buildSsrCjsExternalHeuristics: true },
 	optimizeDeps: {
-		include: ['postprocessing',]
+		include: ['postprocessing', 'lamina', 'three-custom-shader-material']
 	},
 	ssr: {
-		noExternal: ['three', 'troika-three-text', 'postprocessing',]
+		noExternal: ['three', 'troika-three-text', 'postprocessing', 'lamina', 'three-custom-shader-material']
 	},
 	plugins: [sveltekit()],
 };
