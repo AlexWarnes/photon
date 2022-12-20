@@ -3,7 +3,7 @@
 	import { Pass, useThrelte } from '@threlte/core';
 	import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 	// @ts-ignore
-	import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
+	// import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
 
 	const { scene, camera } = useThrelte();
 </script>
