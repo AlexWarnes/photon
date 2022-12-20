@@ -42,7 +42,7 @@
 
 <T.DirectionalLight position={[10, 10, -1]} />
 <T.AmbientLight />
-<Background color="#000106"/>
+<Background color="#000106" />
 <StarField />
 
 <Shader>
@@ -64,12 +64,13 @@
 		<EnemyTurret position={t.position} rateOfFire={difficultyToROFMap[$difficulty]} />
 		<T.Mesh position={t.position}>
 			<T.SphereGeometry args={[30]} />
-			<T.MeshBasicMaterial color="red" wireframe transparent opacity={0.25} />
-			<Attractor
-				strength={1}
-				gravityType="linear"
-				range={30}
+			<T.MeshBasicMaterial
+				color="red"
+				wireframe={$difficulty === 'EASY'}
+				transparent
+				opacity={$difficulty === 'EASY' ? 0.25 : 0}
 			/>
+			<Attractor strength={1} gravityType="linear" range={30} />
 		</T.Mesh>
 	{/each}
 {/if}

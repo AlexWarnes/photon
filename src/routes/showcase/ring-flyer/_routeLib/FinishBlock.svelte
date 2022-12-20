@@ -28,7 +28,6 @@
 		<T.Mesh>
 			<T.TorusGeometry args={[8, 2, 16, 32]} />
 			<T.ShaderMaterial fragmentShader={rainbowFrag} uniforms={$uniforms} />
-			<T.AxesHelper args={[16]} />
 		</T.Mesh>
 	</AutoColliders>
 	<CollisionGroups memberships={[9]} filter={[1]}>

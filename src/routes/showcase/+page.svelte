@@ -4,6 +4,14 @@
 
 	const scenes = [
 		{
+			name: 'Ring Flyer',
+			path: '/showcase/ring-flyer',
+			thumb: './assets/ring-flyer-thumb.png',
+			description:
+				'Navigate past all the obstacles and turrets to fly your ship through the ring at the end of each level.',
+			tools: ['threlte', 'rapier',]
+		},
+		{
 			name: 'Asteroids',
 			path: '/showcase/asteroids',
 			thumb: './assets/asteroids-thumb.png',
