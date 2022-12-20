@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { T, TransformableObject, useFrame, type Position } from '@threlte/core';
+	import { OrbitControls, T, TransformableObject, useFrame, type Position } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 	import { afterUpdate, onMount, tick } from 'svelte';
@@ -17,7 +17,7 @@
   export let xLag: number = 750;
   export let yLag: number = 750;
   export let zLag: number = 1000;
-	export let fov: number | undefined = undefined;
+	export let fov: number | undefined = 60;
 
 	export let x: number;
 	export let y: number;
@@ -57,4 +57,5 @@
 		object={camRef}
 		lookAt={{ x: $camX - offset.x, y: $camY - offset.y, z: $camZ - offset.z }}
 	/>
+	<slot />
 </T.PerspectiveCamera>
