@@ -8,7 +8,7 @@
 	<div class="row">
 		<button
 			on:touchstart={() => ($UP = true)}
-			on:touchend={() => ($UP = true)}
+			on:touchend={() => ($UP = false)}
 			class="btn up"
 			class:active={$UP}
 		/>
