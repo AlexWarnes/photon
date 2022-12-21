@@ -7,8 +7,6 @@
 <div class="buttons">
 	<div class="row">
 		<button
-			on:mousedown={() => ($UP = true)}
-			on:mouseup={() => ($UP = false)}
 			on:touchstart={() => ($UP = true)}
 			on:touchend={() => ($UP = true)}
 			class="btn up"
@@ -17,24 +15,18 @@
 	</div>
 	<div class="row">
 		<button
-			on:mousedown={() => ($LEFT = true)}
-			on:mouseup={() => ($LEFT = false)}
 			on:touchstart={() => ($LEFT = true)}
 			on:touchend={() => ($LEFT = false)}
 			class="btn left"
 			class:active={$LEFT}
 		/>
 		<button
-			on:mousedown={() => ($DOWN = true)}
-			on:mouseup={() => ($DOWN = false)}
 			on:touchstart={() => ($DOWN = true)}
 			on:touchend={() => ($DOWN = false)}
 			class="btn down"
 			class:active={$DOWN}
 		/>
 		<button
-			on:mousedown={() => ($RIGHT = true)}
-			on:mouseup={() => ($RIGHT = false)}
 			on:touchstart={() => ($RIGHT = true)}
 			on:touchend={() => ($RIGHT = false)}
 			class="btn right"
